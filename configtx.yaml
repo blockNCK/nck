@@ -380,13 +380,13 @@ Profiles:
                 - kafka.nck.com:9092
 
             Organizations:
-            - *OrdererOrg
+            - *NCK
             Capabilities:
                 <<: *OrdererCapabilities
         Application:
             <<: *ApplicationDefaults
             Organizations:
-            - <<: *OrdererOrg
+            - <<: *NCK
         Consortiums:
             SampleConsortium:
                 Organizations:
@@ -411,13 +411,13 @@ Profiles:
                 - orderer.nck.com:7050
 
             Organizations:
-            - *OrdererOrg
+            - *NCK
             Capabilities:
                 <<: *OrdererCapabilities
         Application:
             <<: *ApplicationDefaults
             Organizations:
-            - <<: *OrdererOrg
+            - <<: *NCK
         Consortiums:
             SampleConsortium:
                 Organizations:
