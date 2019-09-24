@@ -18,7 +18,6 @@ networks:
   byfn:
 
 services:
-
   orderer.nck.com:
     extends:
       file:   base/docker-compose-base.yaml

@@ -109,7 +109,7 @@ services:
     ports:
       - 10151:10151
 
-peer0.warehouse.nck.com:
+  peer0.warehouse.nck.com:
     container_name: peer0.warehouse.nck.com
     extends:
       file: peer-base.yaml
@@ -131,7 +131,7 @@ peer0.warehouse.nck.com:
     ports:
       - 10051:10051
 
-peer1.warehouse.nck.com:
+  peer1.warehouse.nck.com:
     container_name: peer1.warehouse.nck.com
     extends:
       file: peer-base.yaml
@@ -144,7 +144,7 @@ peer1.warehouse.nck.com:
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10252
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.warehouse.nck.com:10251
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.warehouse.nck.com:10051
-      - CORE_PEER_LOCALMSPID=warehouseMSP
+      - CORE_PEER_LOCALMSPID=WarehouseMSP
     volumes:
         - /var/run/:/host/var/run/
         - ../crypto-config/peerOrganizations/warehouse.nck.com/peers/peer1.warehouse.nck.com/msp:/etc/hyperledger/fabric/msp
