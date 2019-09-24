@@ -131,7 +131,7 @@ peer0.warehouse.nck.com:
     ports:
       - 10051:10051
 
-  peer1.warehouse.nck.com:
+peer1.warehouse.nck.com:
     container_name: peer1.warehouse.nck.com
     extends:
       file: peer-base.yaml
