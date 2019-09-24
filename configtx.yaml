@@ -407,9 +407,8 @@ Profiles:
                   Port: 7050
                   ClientTLSCert: crypto-config/ordererOrganizations/nck.com/orderers/orderer.nck.com/tls/server.crt
                   ServerTLSCert: crypto-config/ordererOrganizations/nck.com/orderers/orderer.nck.com/tls/server.crt
-             Addresses:
+            Addresses:
                 - orderer.nck.com:7050
-
             Organizations:
             - *NCK
             Capabilities:
