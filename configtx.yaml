@@ -16,13 +16,13 @@ Organizations:
 
     # SampleOrg defines an MSP using the sampleconfig.  It should never be used
     # in production but may be used as a template for other definitions
-    - &NCK
+    - &OrdererNCK
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: NCK
+        Name: OrdererNCK
 
         # ID to load the MSP definition as
-        ID: NCKMSP
+        ID: OrdererNCKMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
         MSPDir: crypto-config/ordererOrganizations/nck.com/msp
@@ -33,13 +33,13 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('NCKMSP.member')"
+                Rule: "OR('OrdererNCKMSP.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('NCKMSP.member')"
+                Rule: "OR('OrdererNCKMSP.member')"
             Admins:
                 Type: Signature
-                Rule: "OR('NCKMSP.admin')"
+                Rule: "OR('OrdererNCKMSP.admin')"
 
     - &Importer
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -133,7 +133,7 @@ Organizations:
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
             - Host: peer0.warehouse.nck.com
-              Port: 9071
+              Port: 10051
 
 ################################################################################
 #
@@ -347,7 +347,7 @@ Profiles:
         Orderer:
             <<: *OrdererDefaults
             Organizations:
-                - *NCK
+                - *OrdererNCK
             Capabilities:
                 <<: *OrdererCapabilities
         Consortiums:
@@ -380,13 +380,13 @@ Profiles:
                 - kafka.nck.com:9092
 
             Organizations:
-            - *NCK
+            - *OrdererNCK
             Capabilities:
                 <<: *OrdererCapabilities
         Application:
             <<: *ApplicationDefaults
             Organizations:
-            - <<: *NCK
+            - <<: *OrdererNCK
         Consortiums:
             SampleConsortium:
                 Organizations:
@@ -407,16 +407,22 @@ Profiles:
                   Port: 7050
                   ClientTLSCert: crypto-config/ordererOrganizations/nck.com/orderers/orderer.nck.com/tls/server.crt
                   ServerTLSCert: crypto-config/ordererOrganizations/nck.com/orderers/orderer.nck.com/tls/server.crt
+                - Host: orderer2.nck.com
+                  Port: 7050
+                  ClientTLSCert: crypto-config/ordererOrganizations/nck.com/orderers/orderer2.nck.com/tls/server.crt
+                  ServerTLSCert: crypto-config/ordererOrganizations/nck.com/orderers/orderer2.nck.com/tls/server.crt
+
             Addresses:
                 - orderer.nck.com:7050
+                - orderer2.nck.com:7050                
             Organizations:
-            - *NCK
+            - *OrdererNCK
             Capabilities:
                 <<: *OrdererCapabilities
         Application:
             <<: *ApplicationDefaults
             Organizations:
-            - <<: *NCK
+            - <<: *OrdererNCK
         Consortiums:
             SampleConsortium:
                 Organizations:
