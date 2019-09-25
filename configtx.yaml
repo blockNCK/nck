@@ -396,7 +396,7 @@ Profiles:
                 - kafka.nck.com:9092
 
             Organizations:
-            - *OrdererOrg
+            - *OrdererNCK
             Capabilities:
                 <<: *OrdererCapabilities
         Application:
