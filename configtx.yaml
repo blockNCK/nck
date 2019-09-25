@@ -22,7 +22,7 @@ Organizations:
         Name: OrdererNCK
 
         # ID to load the MSP definition as
-        ID: OrdererNCKMSP
+        ID: OrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
         MSPDir: crypto-config/ordererOrganizations/nck.com/msp
@@ -33,13 +33,45 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('OrdererNCKMSP.member')"
+                Rule: "OR('OrdererMSP.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('OrdererNCKMSP.member')"
+                Rule: "OR('OrdererMSP.member')"
             Admins:
                 Type: Signature
-                Rule: "OR('OrdererNCKMSP.admin')"
+                Rule: "OR('OrdererMSP.admin')"
+
+    - &Warehouse
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment
+        Name: WarehouseMSP
+
+        # ID to load the MSP definition as
+        ID: WarehouseMSP
+
+        MSPDir: crypto-config/peerOrganizations/warehouse.nck.com/msp
+
+        # Policies defines the set of policies at this level of the config tree
+        # For organization policies, their canonical path is usually
+        #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('WarehouseMSP.admin', 'WarehouseMSP.peer', 'WarehouseMSP.client')"
+            Writers:
+                Type: Signature
+                Rule: "OR('WarehouseMSP.admin', 'WarehouseMSP.client')"
+            Admins:
+                Type: Signature
+                Rule: "OR('WarehouseMSP.admin')"
+
+        # leave this flag set to true.
+        AnchorPeers:
+            # AnchorPeers defines the location of peers which can be used
+            # for cross org gossip communication.  Note, this value is only
+            # encoded in the genesis block in the Application section context
+            - Host: peer0.warehouse.nck.com
+              Port: 7051
 
     - &Importer
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -65,13 +97,12 @@ Organizations:
                 Type: Signature
                 Rule: "OR('ImporterMSP.admin')"
 
-        # leave this flag set to true.
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
             - Host: peer0.importer.nck.com
-              Port: 7051
+              Port: 9051
 
     - &Seller
         # DefaultOrg defines the organization which is used in the sampleconfig
@@ -102,37 +133,6 @@ Organizations:
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
             - Host: peer0.seller.nck.com
-              Port: 9051
-
-    - &Warehouse
-        # DefaultOrg defines the organization which is used in the sampleconfig
-        # of the fabric.git development environment
-        Name: WarehouseMSP
-
-        # ID to load the MSP definition as
-        ID: WarehouseMSP
-
-        MSPDir: crypto-config/peerOrganizations/warehouse.nck.com/msp
-
-        # Policies defines the set of policies at this level of the config tree
-        # For organization policies, their canonical path is usually
-        #   /Channel/<Application|Orderer>/<OrgName>/<PolicyName>
-        Policies:
-            Readers:
-                Type: Signature
-                Rule: "OR('WarehouseMSP.admin', 'WarehouseMSP.peer', 'WarehouseMSP.client')"
-            Writers:
-                Type: Signature
-                Rule: "OR('WarehouseMSP.admin', 'WarehouseMSP.client')"
-            Admins:
-                Type: Signature
-                Rule: "OR('WarehouseMSP.admin')"
-
-        AnchorPeers:
-            # AnchorPeers defines the location of peers which can be used
-            # for cross org gossip communication.  Note, this value is only
-            # encoded in the genesis block in the Application section context
-            - Host: peer0.warehouse.nck.com
               Port: 10051
 
 ################################################################################
@@ -247,7 +247,7 @@ Application: &ApplicationDefaults
 Orderer: &OrdererDefaults
 
     # Orderer Type: The orderer implementation to start
-    # Available types are "solo" and "kafka"
+    # Available types are "solo","kafka"  and "etcdraft"
     OrdererType: solo
 
     Addresses:
@@ -277,6 +277,22 @@ Orderer: &OrdererDefaults
         Brokers:
             - 127.0.0.1:9092
 
+    # EtcdRaft defines configuration which must be set when the "etcdraft"
+    # orderertype is chosen.
+    EtcdRaft:
+        # The set of Raft replicas for this network. For the etcd/raft-based
+        # implementation, we expect every replica to also be an OSN. Therefore,
+        # a subset of the host:port items enumerated in this list should be
+        # replicated under the Orderer.Addresses key above.
+        Consenters:
+            - Host: orderer.nck.com
+              Port: 7050
+              ClientTLSCert: crypto-config/ordererOrganizations/nck.com/orderers/orderer.nck.com/tls/server.crt
+              ServerTLSCert: crypto-config/ordererOrganizations/nck.com/orderers/orderer.nck.com/tls/server.crt
+            - Host: orderer2.nck.com
+              Port: 7050
+              ClientTLSCert: crypto-config/ordererOrganizations/nck.com/orderers/orderer2.nck.com/tls/server.crt
+              ServerTLSCert: crypto-config/ordererOrganizations/nck.com/orderers/orderer2.nck.com/tls/server.crt
     # Organizations is the list of orgs which are defined as participants on
     # the orderer side of the network
     Organizations:
@@ -354,8 +370,8 @@ Profiles:
             SampleConsortium:
                 Organizations:
                     - *Warehouse
-                    - *Seller
                     - *Importer
+                    - *Seller
     TwoOrgsChannel:
         Consortium: SampleConsortium
         <<: *ChannelDefaults
@@ -363,8 +379,8 @@ Profiles:
             <<: *ApplicationDefaults
             Organizations:
                 - *Warehouse
-                - *Seller
                 - *Importer
+                - *Seller
             Capabilities:
                 <<: *ApplicationCapabilities
 
@@ -380,7 +396,7 @@ Profiles:
                 - kafka.nck.com:9092
 
             Organizations:
-            - *OrdererNCK
+            - *OrdererOrg
             Capabilities:
                 <<: *OrdererCapabilities
         Application:
@@ -411,10 +427,10 @@ Profiles:
                   Port: 7050
                   ClientTLSCert: crypto-config/ordererOrganizations/nck.com/orderers/orderer2.nck.com/tls/server.crt
                   ServerTLSCert: crypto-config/ordererOrganizations/nck.com/orderers/orderer2.nck.com/tls/server.crt
-
             Addresses:
                 - orderer.nck.com:7050
-                - orderer2.nck.com:7050                
+                - orderer2.nck.com:7050
+
             Organizations:
             - *OrdererNCK
             Capabilities:
@@ -427,5 +443,6 @@ Profiles:
             SampleConsortium:
                 Organizations:
                 - *Warehouse
-                - *Seller
                 - *Importer
+                - *Seller
+
