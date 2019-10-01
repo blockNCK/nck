@@ -73,15 +73,15 @@ Organizations:
             - Host: peer0.warehouse.nck.com
               Port: 7051
 
-    - &Importer
+    - &Supplier
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: ImporterMSP
+        Name: SupplierMSP
 
         # ID to load the MSP definition as
-        ID: ImporterMSP
+        ID: SupplierMSP
 
-        MSPDir: crypto-config/peerOrganizations/importer.nck.com/msp
+        MSPDir: crypto-config/peerOrganizations/supplier.nck.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -89,30 +89,30 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('ImporterMSP.admin', 'ImporterMSP.peer', 'ImporterMSP.client')"
+                Rule: "OR('SupplierMSP.admin', 'SupplierMSP.peer', 'SupplierMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('ImporterMSP.admin', 'ImporterMSP.client')"
+                Rule: "OR('SupplierMSP.admin', 'SupplierMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('ImporterMSP.admin')"
+                Rule: "OR('SupplierMSP.admin')"
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.importer.nck.com
+            - Host: peer0.supplier.nck.com
               Port: 9051
 
-    - &Seller
+    - &Issuer
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: SellerMSP
+        Name: IssuerMSP
 
         # ID to load the MSP definition as
-        ID: SellerMSP
+        ID: IssuerMSP
 
-        MSPDir: crypto-config/peerOrganizations/seller.nck.com/msp
+        MSPDir: crypto-config/peerOrganizations/issuer.nck.com/msp
 
         # Policies defines the set of policies at this level of the config tree
         # For organization policies, their canonical path is usually
@@ -120,19 +120,19 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('SellerMSP.admin', 'SellerMSP.peer', 'SellerMSP.client')"
+                Rule: "OR('IssuerMSP.admin', 'IssuerMSP.peer', 'IssuerMSP.client')"
             Writers:
                 Type: Signature
-                Rule: "OR('SellerMSP.admin', 'SellerMSP.client')"
+                Rule: "OR('IssuerMSP.admin', 'IssuerMSP.client')"
             Admins:
                 Type: Signature
-                Rule: "OR('SellerMSP.admin')"
+                Rule: "OR('IssuerMSP.admin')"
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.seller.nck.com
+            - Host: peer0.issuer.nck.com
               Port: 10051
 
 ################################################################################
@@ -370,8 +370,8 @@ Profiles:
             SampleConsortium:
                 Organizations:
                     - *Warehouse
-                    - *Importer
-                    - *Seller
+                    - *Supplier
+                    - *Issuer
     TwoOrgsChannel:
         Consortium: SampleConsortium
         <<: *ChannelDefaults
@@ -379,8 +379,8 @@ Profiles:
             <<: *ApplicationDefaults
             Organizations:
                 - *Warehouse
-                - *Importer
-                - *Seller
+                - *Supplier
+                - *Issuer
             Capabilities:
                 <<: *ApplicationCapabilities
 
@@ -407,8 +407,8 @@ Profiles:
             SampleConsortium:
                 Organizations:
                 - *Warehouse
-                - *Seller
-                - *Importer
+                - *Issuer
+                - *Supplier
 
     SampleMultiNodeEtcdRaft:
         <<: *ChannelDefaults
@@ -443,6 +443,6 @@ Profiles:
             SampleConsortium:
                 Organizations:
                 - *Warehouse
-                - *Importer
-                - *Seller
+                - *Supplier
+                - *Issuer
 

@@ -9,10 +9,10 @@ volumes:
   orderer.nck.com:
   peer0.warehouse.nck.com:
   peer1.warehouse.nck.com:
-  peer0.importer.nck.com:
-  peer1.importer.nck.com:
-  peer0.seller.nck.com:
-  peer1.seller.nck.com:
+  peer0.supplier.nck.com:
+  peer1.supplier.nck.com:
+  peer0.issuer.nck.com:
+  peer1.issuer.nck.com:
 
 networks:
   byfn:
@@ -43,35 +43,35 @@ services:
     networks:
       - byfn
 
-  peer0.importer.nck.com:
-    container_name: peer0.importer.nck.com
+  peer0.supplier.nck.com:
+    container_name: peer0.supplier.nck.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer0.importer.nck.com
+      service: peer0.supplier.nck.com
     networks:
       - byfn
 
-  peer1.importer.nck.com:
-    container_name: peer1.importer.nck.com
+  peer1.supplier.nck.com:
+    container_name: peer1.supplier.nck.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer1.importer.nck.com
+      service: peer1.supplier.nck.com
     networks:
       - byfn
 
-  peer0.seller.nck.com:
-    container_name: peer0.seller.nck.com
+  peer0.issuer.nck.com:
+    container_name: peer0.issuer.nck.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer0.seller.nck.com
+      service: peer0.issuer.nck.com
     networks:
       - byfn
 
-  peer1.seller.nck.com:
-    container_name: peer1.seller.nck.com
+  peer1.issuer.nck.com:
+    container_name: peer1.issuer.nck.com
     extends:
       file:  base/docker-compose-base.yaml
-      service: peer1.seller.nck.com
+      service: peer1.issuer.nck.com
     networks:
       - byfn
 
@@ -102,14 +102,14 @@ services:
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
         - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
         - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
-        - ./nckcc:/opt/gopath/src/github.com/nckcc
+        - ./nckcc/:/opt/gopath/src/github.com/nckcc
     depends_on:
       - orderer.nck.com
       - peer0.warehouse.nck.com
       - peer1.warehouse.nck.com
-      - peer0.importer.nck.com
-      - peer1.importer.nck.com
-      - peer0.seller.nck.com
-      - peer1.seller.nck.com
+      - peer0.supplier.nck.com
+      - peer1.supplier.nck.com
+      - peer0.issuer.nck.com
+      - peer1.issuer.nck.com
     networks:
       - byfn

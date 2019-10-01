@@ -65,91 +65,91 @@ services:
     ports:
       - 8051:8051
 
-  peer0.importer.nck.com:
-    container_name: peer0.importer.nck.com
+  peer0.supplier.nck.com:
+    container_name: peer0.supplier.nck.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer0.importer.nck.com
-      - CORE_PEER_ADDRESS=peer0.importer.nck.com:9051
+      - CORE_PEER_ID=peer0.supplier.nck.com
+      - CORE_PEER_ADDRESS=peer0.supplier.nck.com:9051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
-      - CORE_PEER_CHAINCODEADDRESS=peer0.importer.nck.com:9052
+      - CORE_PEER_CHAINCODEADDRESS=peer0.supplier.nck.com:9052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.importer.nck.com:9051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.importer.nck.com:10051
-      - CORE_PEER_LOCALMSPID=ImporterMSP
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.supplier.nck.com:9051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.supplier.nck.com:10051
+      - CORE_PEER_LOCALMSPID=SupplierMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/importer.nck.com/peers/peer0.importer.nck.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/importer.nck.com/peers/peer0.importer.nck.com/tls:/etc/hyperledger/fabric/tls
-        - peer0.importer.nck.com:/var/hyperledger/production
+        - ../crypto-config/peerOrganizations/supplier.nck.com/peers/peer0.supplier.nck.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/supplier.nck.com/peers/peer0.supplier.nck.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.supplier.nck.com:/var/hyperledger/production
     ports:
       - 9051:9051
 
-  peer1.importer.nck.com:
-    container_name: peer1.importer.nck.com
+  peer1.supplier.nck.com:
+    container_name: peer1.supplier.nck.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer1.importer.nck.com
-      - CORE_PEER_ADDRESS=peer1.importer.nck.com:10051
+      - CORE_PEER_ID=peer1.supplier.nck.com
+      - CORE_PEER_ADDRESS=peer1.supplier.nck.com:10051
       - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
-      - CORE_PEER_CHAINCODEADDRESS=peer1.importer.nck.com:10052
+      - CORE_PEER_CHAINCODEADDRESS=peer1.supplier.nck.com:10052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.importer.nck.com:10051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.importer.nck.com:9051
-      - CORE_PEER_LOCALMSPID=ImporterMSP
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.supplier.nck.com:10051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.supplier.nck.com:9051
+      - CORE_PEER_LOCALMSPID=SupplierMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/importer.nck.com/peers/peer1.importer.nck.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/importer.nck.com/peers/peer1.importer.nck.com/tls:/etc/hyperledger/fabric/tls
-        - peer1.importer.nck.com:/var/hyperledger/production
+        - ../crypto-config/peerOrganizations/supplier.nck.com/peers/peer1.supplier.nck.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/supplier.nck.com/peers/peer1.supplier.nck.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.supplier.nck.com:/var/hyperledger/production
     ports:
       - 10051:10051
 
-  peer0.seller.nck.com:
-    container_name: peer0.seller.nck.com
+  peer0.issuer.nck.com:
+    container_name: peer0.issuer.nck.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer0.seller.nck.com
-      - CORE_PEER_ADDRESS=peer0.seller.nck.com:10151
+      - CORE_PEER_ID=peer0.issuer.nck.com
+      - CORE_PEER_ADDRESS=peer0.issuer.nck.com:10151
       - CORE_PEER_LISTENADDRESS=0.0.0.0:10151
-      - CORE_PEER_CHAINCODEADDRESS=peer0.seller.nck.com:10152
+      - CORE_PEER_CHAINCODEADDRESS=peer0.issuer.nck.com:10152
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10152
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.seller.nck.com:10151
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.seller.nck.com:10251
-      - CORE_PEER_LOCALMSPID=SellerMSP
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.issuer.nck.com:10151
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.issuer.nck.com:10251
+      - CORE_PEER_LOCALMSPID=IssuerMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/seller.nck.com/peers/peer0.seller.nck.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/seller.nck.com/peers/peer0.seller.nck.com/tls:/etc/hyperledger/fabric/tls
-        - peer0.seller.nck.com:/var/hyperledger/production
+        - ../crypto-config/peerOrganizations/issuer.nck.com/peers/peer0.issuer.nck.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/issuer.nck.com/peers/peer0.issuer.nck.com/tls:/etc/hyperledger/fabric/tls
+        - peer0.issuer.nck.com:/var/hyperledger/production
     ports:
       - 10151:10151
 
-  peer1.seller.nck.com:
-    container_name: peer1.seller.nck.com
+  peer1.issuer.nck.com:
+    container_name: peer1.issuer.nck.com
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer1.seller.nck.com
-      - CORE_PEER_ADDRESS=peer1.seller.nck.com:10251
+      - CORE_PEER_ID=peer1.issuer.nck.com
+      - CORE_PEER_ADDRESS=peer1.issuer.nck.com:10251
       - CORE_PEER_LISTENADDRESS=0.0.0.0:10251
-      - CORE_PEER_CHAINCODEADDRESS=peer1.seller.nck.com:10252
+      - CORE_PEER_CHAINCODEADDRESS=peer1.issuer.nck.com:10252
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10252
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.seller.nck.com:10251
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.seller.nck.com:10151
-      - CORE_PEER_LOCALMSPID=SellerMSP
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.issuer.nck.com:10251
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.issuer.nck.com:10151
+      - CORE_PEER_LOCALMSPID=IssuerMSP
     volumes:
         - /var/run/:/host/var/run/
-        - ../crypto-config/peerOrganizations/seller.nck.com/peers/peer1.seller.nck.com/msp:/etc/hyperledger/fabric/msp
-        - ../crypto-config/peerOrganizations/seller.nck.com/peers/peer1.seller.nck.com/tls:/etc/hyperledger/fabric/tls
-        - peer1.seller.nck.com:/var/hyperledger/production
+        - ../crypto-config/peerOrganizations/issuer.nck.com/peers/peer1.issuer.nck.com/msp:/etc/hyperledger/fabric/msp
+        - ../crypto-config/peerOrganizations/issuer.nck.com/peers/peer1.issuer.nck.com/tls:/etc/hyperledger/fabric/tls
+        - peer1.issuer.nck.com:/var/hyperledger/production
     ports:
       - 10251:10251
 

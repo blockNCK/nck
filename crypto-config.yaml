@@ -77,16 +77,16 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   # Org2: See "Org1" for full specification
   # ---------------------------------------------------------------------------
-  - Name: Importer
-    Domain: importer.nck.com
+  - Name: Supplier
+    Domain: supplier.nck.com
     EnableNodeOUs: true
     Template:
       Count: 2
     Users:
       Count: 5
 
-  - Name: Seller
-    Domain: seller.nck.com
+  - Name: Issuer
+    Domain: issuer.nck.com
     EnableNodeOUs: true
     Template:
       Count: 2
