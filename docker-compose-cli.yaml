@@ -102,6 +102,7 @@ services:
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
         - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
         - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+        - ./nckcc:/opt/gopath/src/github.com/nckcc
     depends_on:
       - orderer.nck.com
       - peer0.warehouse.nck.com
