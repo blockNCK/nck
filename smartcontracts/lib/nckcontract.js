@@ -117,8 +117,8 @@ class NCKContract extends Contract {
             batch[i].docType = 'batch';
             await ctx.stub.putState(batch[i].RFIDtag, Buffer.from(JSON.stringify(batch[i])));
             let indexName = 'drugName ~ RFIDtag'
-            let drugNameRFIDTagIndexKey = await stub.createCompositeKey(indexName, [batch[i].drugName, batch[i].RFIDtag]);
-            await stub.putState(drugNameRFIDTagIndexKey, Buffer.from('\u0000'));
+            let drugNameRFIDTagIndexKey = await ctx.stub.createCompositeKey(indexName, [batch[i].drugName, batch[i].RFIDtag]);
+            await ctx.stub.putState(drugNameRFIDTagIndexKey, Buffer.from('\u0000'));
         
             console.info('Added <--> ', batch[i]);
         }
@@ -166,10 +166,10 @@ class NCKContract extends Contract {
         };
         await ctx.stub.putState(RFIDtag, Buffer.from(JSON.stringify(batch)));
         let indexName = 'drugName ~ RFIDtag'
-        let drugNameRFIDTagIndexKey = await stub.createCompositeKey(indexName, [batch.drugName, batch.RFIDtag]);
+        let drugNameRFIDTagIndexKey = await ctx.stub.createCompositeKey(indexName, [batch.drugName, batch.RFIDtag]);
         //  Save index entry to state. Only the key name is needed, no need to store a duplicate copy of the batch.
         //  Note - passing a 'nil' value will effectively delete the key from state, therefore we pass null character as value
-        await stub.putState(drugNameRFIDTagIndexKey, Buffer.from('\u0000'));    
+        await ctx.stub.putState(drugNameRFIDTagIndexKey, Buffer.from('\u0000'));    
         console.info('============= END : Create Batch ===========');
     }
 
