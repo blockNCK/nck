@@ -4,7 +4,7 @@
 
 'use strict';
 
-const FabCar = require('./lib/nckchaincode');
+const FabCar = require('./lib/nckcontract');
 
 module.exports.NCKContract = this.NCKContract;
 module.exports.contracts = [ this.NCKContract ];

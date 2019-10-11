@@ -101,21 +101,45 @@ peers:
     grpcOptions:
       ssl-target-name-override: peer0.warehouse.nck.com
       request-timeout: 120001
+      
+  peer1.warehouse.nck.com:
+    # this URL is used to send endorsement and query requests
+    url: grpc://localhost:8051
+
+    grpcOptions:
+      ssl-target-name-override: peer1.warehouse.nck.com
+      request-timeout: 120001
 
   peer0.issuer.nck.com:
     # this URL is used to send endorsement and query requests
-    url: grpc://localhost:9051
+    url: grpc://localhost:10151
 
     grpcOptions:
       ssl-target-name-override: peer0.issuer.nck.com
       request-timeout: 120001
 
+  peer1.issuer.nck.com:
+    # this URL is used to send endorsement and query requests
+    url: grpc://localhost:10251
+
+    grpcOptions:
+      ssl-target-name-override: peer1.issuer.nck.com
+      request-timeout: 120001
+
   peer0.supplier.nck.com:
+    # this URL is used to send endorsement and query requests
+    url: grpc://localhost:9051
+
+    grpcOptions:
+      ssl-target-name-override: peer0.supplier.nck.com
+      request-timeout: 120001
+
+  peer1.supplier.nck.com:
     # this URL is used to send endorsement and query requests
     url: grpc://localhost:10051
 
     grpcOptions:
-      ssl-target-name-override: peer0.supplier.nck.com
+      ssl-target-name-override: peer1.supplier.nck.com
       request-timeout: 120001
 
 
@@ -124,7 +148,7 @@ peers:
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  ca-org1:
+  ca-warehouse:
     url: http://localhost:7054
     # the properties specified under this object are passed to the 'http' client verbatim when
     # making the request to the Fabric-CA server
@@ -136,5 +160,30 @@ certificateAuthorities:
     registrar:
       - enrollId: admin
         enrollSecret: adminpw
-    # [Optional] The optional name of the CA.
-    caName: ca-org1
+
+  ca-issuer:
+    url: http://localhost:9054
+    # the properties specified under this object are passed to the 'http' client verbatim when
+    # making the request to the Fabric-CA server
+    httpOptions:
+      verify: false
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+
+  ca-supplier:
+    url: http://localhost:10154
+    # the properties specified under this object are passed to the 'http' client verbatim when
+    # making the request to the Fabric-CA server
+    httpOptions:
+      verify: false
+
+    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+    # needed to enroll and invoke new users.
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+
