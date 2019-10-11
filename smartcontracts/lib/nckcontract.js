@@ -115,9 +115,9 @@ class NCKContract extends Contract {
 
         for (let i = 0; i < batch.length; i++) {
             batch[i].docType = 'batch';
-            await ctx.stub.putState(RFIDtag, Buffer.from(JSON.stringify(batch[i])));
+            await ctx.stub.putState(batch[i].RFIDtag, Buffer.from(JSON.stringify(batch[i])));
             let indexName = 'drugName ~ RFIDtag'
-            let drugNameRFIDTagIndexKey = await stub.createCompositeKey(indexName, [batch.drugName, batch.RFIDtag]);
+            let drugNameRFIDTagIndexKey = await stub.createCompositeKey(indexName, [batch[i].drugName, batch[i].RFIDtag]);
             await stub.putState(drugNameRFIDTagIndexKey, Buffer.from('\u0000'));
         
             console.info('Added <--> ', batch[i]);
