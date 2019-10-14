@@ -68,6 +68,8 @@ organizations:
 orderers:
   orderer.nck.com:
     url: grpcs://localhost:7050
+    tlsCACerts:
+      path: ../../nck-network/crypto-config/ordererOrganizations/nck.com/tlsca/tlsca.nck.com-cert.pem
     grpcOptions:
       ssl-target-name-override: orderer.nck.com
 
