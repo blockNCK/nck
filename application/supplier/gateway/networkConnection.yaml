@@ -59,7 +59,7 @@ organizations:
     peers:
       - peer0.supplier.nck.com
       - peer1.supplier.nck.com
-  Supplier:
+  Issuer:
     mspid: IssuerMSP
     peers:
       - peer0.issuer.nck.com
