@@ -1,29 +1,13 @@
 ---
-#
-# The network connection profile provides client applications the information about the target
-# blockchain network that are necessary for the applications to interact with it. These are all
-# knowledge that must be acquired from out-of-band sources. This file provides such a source.
-#
+
 name: "nck-network"
 
-#
-# Any properties with an "x-" prefix will be treated as application-specific, exactly like how naming
-# in HTTP headers or swagger properties work. The SDK will simply ignore these fields and leave
-# them for the applications to process. This is a mechanism for different components of an application
-# to exchange information that are not part of the standard schema described below. In particular,
-# the "x-type" property with the "hlfv1" value example below is used by Hyperledger Composer to
-# determine the type of Fabric networks (v0.6 vs. v1.0) it needs to work with.
-#
 x-type: "hlfv1"
 
 #
 # Describe what the target network is/does.
 #
 description: "The nck network"
-
-#
-# Schema version of the content. Used by the SDK to apply the corresponding parsing rules.
-#
 version: "1.0"
 
 client:
@@ -39,8 +23,6 @@ channels:
     orderers:
       - orderer.nck.com
 
-    # Required. list of peers from participating orgs
-    # Required. list of peers from participating orgs
     peers:
       peer0.supplier.nck.com:
         # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
@@ -61,26 +43,7 @@ channels:
         # produce events but the app typically only needs to connect to one to listen to events.
         # Default: true
         eventSource: true
-      peer0.warehouse.nck.com:
-        # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
-        # have the chaincode installed. The app can also use this property to decide which peers
-        # to send the chaincode install request. Default: true
-        endorsingPeer: true
-
-        # [Optional]. will this peer be sent query proposals? The peer must have the chaincode
-        # installed. The app can also use this property to decide which peers to send the
-        # chaincode install request. Default: true
-        chaincodeQuery: true
-
-        # [Optional]. will this peer be sent query proposals that do not require chaincodes, like
-        # queryBlock(), queryTransaction(), etc. Default: true
-        ledgerQuery: true
-
-        # [Optional]. will this peer be the target of the SDK's listener registration? All peers can
-        # produce events but the app typically only needs to connect to one to listen to events.
-        # Default: true
-        eventSource: true
-      peer0.issuer.nck.com:
+      peer1.supplier.nck.com:
         # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
         # have the chaincode installed. The app can also use this property to decide which peers
         # to send the chaincode install request. Default: true
@@ -100,17 +63,7 @@ channels:
         # Default: true
         eventSource: true
 
-#
-# list of participating organizations in this network
-#
 organizations:
-  Warehouse:
-    mspid: WarehouseMSP
-
-    peers:
-      - peer0.warehouse.nck.com
-      - peer1.warehouse.nck.com
-
   Supplier:
     mspid: SupplierMSP
 
@@ -118,17 +71,6 @@ organizations:
       - peer0.supplier.nck.com
       - peer1.supplier.nck.com
 
-  Issuer:
-    mspid: IssuerMSP
-
-    peers:
-      - peer0.issuer.nck.com
-      - peer1.issuer.nck.com
-#
-# List of orderers to send transaction and channel create/update requests to. For the time
-# being only one orderer is needed. If more than one is defined, which one get used by the
-# SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
-#
 orderers:
   orderer.nck.com:
     url: grpc://localhost:7050
@@ -138,10 +80,6 @@ orderers:
     grpcOptions:
       ssl-target-name-override: orderer.nck.com
 
-#
-# List of peers to send various requests to, including endorsement, query
-# and event listener registration.
-#
 peers:
   peer0.supplier.nck.com:
     # this URL is used to send endorsement and query requests
