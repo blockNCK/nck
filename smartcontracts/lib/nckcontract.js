@@ -134,7 +134,7 @@ class NCKContract extends Contract {
             throw new Error(`${RFIDtag} does not exist`);
         }
         console.info('=======================================');
-        console.log(batchAsbytes.toString());
+        console.log(batchAsBytes.toString());
         console.info('=======================================');
         return batchAsbytes;
     }
