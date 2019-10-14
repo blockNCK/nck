@@ -73,7 +73,7 @@ organizations:
 
 orderers:
   orderer.nck.com:
-    url: grpc://localhost:7050
+    url: grpcs://localhost:7050
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
@@ -83,7 +83,7 @@ orderers:
 peers:
   peer0.supplier.nck.com:
     # this URL is used to send endorsement and query requests
-    url: grpc://localhost:9051
+    url: grpcs://localhost:9051
 
     grpcOptions:
       ssl-target-name-override: peer0.supplier.nck.com
@@ -91,7 +91,7 @@ peers:
 
   peer1.supplier.nck.com:
     # this URL is used to send endorsement and query requests
-    url: grpc://localhost:10051
+    url: grpcs://localhost:10051
 
     grpcOptions:
       ssl-target-name-override: peer1.supplier.nck.com
@@ -104,7 +104,7 @@ peers:
 #
 certificateAuthorities:
   ca-supplier:
-    url: http://localhost:9054
+    url: https://localhost:9054
     # the properties specified under this object are passed to the 'http' client verbatim when
     # making the request to the Fabric-CA server
     httpOptions:
