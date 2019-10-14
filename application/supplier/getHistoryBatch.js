@@ -50,7 +50,7 @@ async function main () {
         const network = await gateway.getNetwork('nckchannel');
         const contract = await network.getContract('nckcc');
         const buyResponse = await contract.submitTransaction('getHistoryForBatch','46793579024');
-        console.log(`Transaction has been evaluated, result is: ${buyResponse.toString()}`);
+        console.log(`Transaction has been evaluated, result is: ${buyResponse}`);
 
     } catch (error) {
 
