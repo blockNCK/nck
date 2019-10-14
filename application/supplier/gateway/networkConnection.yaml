@@ -121,31 +121,3 @@ peers:
       ssl-target-name-override: peer1.issuer.nck.com
       request-timeout: 120001
 
-
-# Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
-# certificate management to be done via REST APIs. Application may choose to use a standard
-# Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
-#
-certificateAuthorities:
-  ca-warehouse:
-    url: https://localhost:7054
-    httpOptions:
-      verify: false
-    registrar:
-      - enrollId: admin
-        enrollSecret: adminpw
-  ca-supplier:
-    url: https://localhost:9054
-    httpOptions:
-      verify: false
-    registrar:
-      - enrollId: admin
-        enrollSecret: adminpw
-  ca-issuer:
-    url: https://localhost:10154
-    httpOptions:
-      verify: false
-    registrar:
-      - enrollId: admin
-        enrollSecret: adminpw
-
