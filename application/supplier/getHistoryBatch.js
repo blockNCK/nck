@@ -50,6 +50,7 @@ async function main () {
         const network = await gateway.getNetwork('nckchannel');
         const contract = await network.getContract('nckcc');
         const buyResponse = await contract.submitTransaction('getHistoryForBatch','46793579024');
+        console.log(`Transaction has been evaluated, result is: ${buyResponse.toString()}`);
 
     } catch (error) {
 
@@ -66,11 +67,11 @@ async function main () {
 }
 main().then(() => {
 
-    console.log('Create batch complete.');
+    console.log('Get hisory for a batch batch complete.');
 
 }).catch((e) => {
 
-    console.log('create program exception.');
+    console.log('get hisory for a batch program exception.');
     console.log(e);
     console.log(e.stack);
     process.exit(-1);
