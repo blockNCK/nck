@@ -4,97 +4,119 @@ name: "nck-network"
 
 x-type: "hlfv1"
 
-#
-# Describe what the target network is/does.
-#
 description: "The nck network"
 version: "1.0"
 
 client:
-  organization: Supplier
+  organization: NCK
 
 channels:
-  # name of the channel
+
   nckchannel:
-    # Required. list of orderers designated by the application to use for transactions on this
-    # channel. This list can be a result of access control ("org1" can only access "ordererA"), or
-    # operational decisions to share loads from applications among the orderers.  The values must
-    # be "names" of orgs defined under "organizations/peers"
     orderers:
       - orderer.nck.com
 
     peers:
-      peer0.supplier.nck.com:
-        # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
-        # have the chaincode installed. The app can also use this property to decide which peers
-        # to send the chaincode install request. Default: true
+      peer0.warehouse.nck.com:
         endorsingPeer: false
-
-        # [Optional]. will this peer be sent query proposals? The peer must have the chaincode
-        # installed. The app can also use this property to decide which peers to send the
-        # chaincode install request. Default: true
         chaincodeQuery: true
-
-        # [Optional]. will this peer be sent query proposals that do not require chaincodes, like
-        # queryBlock(), queryTransaction(), etc. Default: true
         ledgerQuery: true
-
-        # [Optional]. will this peer be the target of the SDK's listener registration? All peers can
-        # produce events but the app typically only needs to connect to one to listen to events.
-        # Default: true
+        eventSource: true
+      peer1.warehouse.nck.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer0.supplier.nck.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
         eventSource: true
       peer1.supplier.nck.com:
-        # [Optional]. will this peer be sent transaction proposals for endorsement? The peer must
-        # have the chaincode installed. The app can also use this property to decide which peers
-        # to send the chaincode install request. Default: true
         endorsingPeer: false
-
-        # [Optional]. will this peer be sent query proposals? The peer must have the chaincode
-        # installed. The app can also use this property to decide which peers to send the
-        # chaincode install request. Default: true
         chaincodeQuery: true
-
-        # [Optional]. will this peer be sent query proposals that do not require chaincodes, like
-        # queryBlock(), queryTransaction(), etc. Default: true
         ledgerQuery: true
-
-        # [Optional]. will this peer be the target of the SDK's listener registration? All peers can
-        # produce events but the app typically only needs to connect to one to listen to events.
-        # Default: true
+        eventSource: true
+      peer0.issuer.nck.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1.issuer.nck.com:
+        endorsingPeer: false
+        chaincodeQuery: true
+        ledgerQuery: true
         eventSource: true
 
 organizations:
+  Warehouse:
+    mspid: WarehouseMSP
+    peers:
+      - peer0.warehouse.nck.com
+      - peer1.warehouse.nck.com
   Supplier:
     mspid: SupplierMSP
-
     peers:
       - peer0.supplier.nck.com
       - peer1.supplier.nck.com
+  Supplier:
+    mspid: IssuerMSP
+    peers:
+      - peer0.issuer.nck.com
+      - peer1.issuer.nck.com
 
 orderers:
   orderer.nck.com:
     url: grpcs://localhost:7050
-
-    # these are standard properties defined by the gRPC library
-    # they will be passed in as-is to gRPC client constructor
     grpcOptions:
       ssl-target-name-override: orderer.nck.com
 
 peers:
-  peer0.supplier.nck.com:
-    # this URL is used to send endorsement and query requests
-    url: grpcs://localhost:9051
+  peer0.warehouse.nck.com:
+    url: grpcs://localhost:7051
+    tlsCACerts:
+      path: ../../../nck-network/crypto-config/peerOrganizations/warehouse.nck.com/tlsca/tlsca.warehouse.nck.com-cert.pem
+    grpcOptions:
+      ssl-target-name-override: peer0.warehouse.nck.com
+      request-timeout: 120001
 
+  peer1.warehouse.nck.com:
+    url: grpcs://localhost:8051
+    tlsCACerts:
+      path: ../../../nck-network/crypto-config/peerOrganizations/warehouse.nck.com/tlsca/tlsca.warehouse.nck.com-cert.pem
+    grpcOptions:
+      ssl-target-name-override: peer1.warehouse.nck.com
+      request-timeout: 120001
+
+  peer0.supplier.nck.com:
+    url: grpcs://localhost:9051
+    tlsCACerts:
+      path: ../../../nck-network/crypto-config/peerOrganizations/supplier.nck.com/tlsca/tlsca.supplier.nck.com-cert.pem
     grpcOptions:
       ssl-target-name-override: peer0.supplier.nck.com
       request-timeout: 120001
 
   peer1.supplier.nck.com:
-    # this URL is used to send endorsement and query requests
     url: grpcs://localhost:10051
-
+    tlsCACerts:
+      path: ../../../nck-network/crypto-config/peerOrganizations/supplier.nck.com/tlsca/tlsca.supplier.nck.com-cert.pem
     grpcOptions:
       ssl-target-name-override: peer1.supplier.nck.com
+      request-timeout: 120001
+  peer0.issuer.nck.com:
+    url: grpcs://localhost:10151
+    tlsCACerts:
+      path: ../../../nck-network/crypto-config/peerOrganizations/issuer.nck.com/tlsca/tlsca.issuer.nck.com-cert.pem
+    grpcOptions:
+      ssl-target-name-override: peer0.issuer.nck.com
+      request-timeout: 120001
+
+  peer1.issuer.nck.com:
+    url: grpcs://localhost:10251
+    tlsCACerts:
+      path: ../../../nck-network/crypto-config/peerOrganizations/issuer.nck.com/tlsca/tlsca.issuer.nck.com-cert.pem
+    grpcOptions:
+      ssl-target-name-override: peer1.issuer.nck.com
       request-timeout: 120001
 
 
@@ -103,15 +125,24 @@ peers:
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  ca-supplier:
-    url: https://localhost:9054
-    # the properties specified under this object are passed to the 'http' client verbatim when
-    # making the request to the Fabric-CA server
+  ca-warehouse:
+    url: https://localhost:7054
     httpOptions:
       verify: false
-
-    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
-    # needed to enroll and invoke new users.
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+  ca-supplier:
+    url: https://localhost:9054
+    httpOptions:
+      verify: false
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+  ca-issuer:
+    url: https://localhost:10154
+    httpOptions:
+      verify: false
     registrar:
       - enrollId: admin
         enrollSecret: adminpw
