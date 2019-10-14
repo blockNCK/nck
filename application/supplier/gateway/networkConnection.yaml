@@ -18,7 +18,7 @@ channels:
 
     peers:
       peer0.warehouse.nck.com:
-        endorsingPeer: false
+        endorsingPeer: true
         chaincodeQuery: true
         ledgerQuery: true
         eventSource: true
