@@ -87,38 +87,6 @@ orderers:
 # and event listener registration.
 #
 peers:
-  peer0.warehouse.nck.com:
-    # this URL is used to send endorsement and query requests
-    url: grpc://localhost:7051
-
-    grpcOptions:
-      ssl-target-name-override: peer0.warehouse.nck.com
-      request-timeout: 120001
-      
-  peer1.warehouse.nck.com:
-    # this URL is used to send endorsement and query requests
-    url: grpc://localhost:8051
-
-    grpcOptions:
-      ssl-target-name-override: peer1.warehouse.nck.com
-      request-timeout: 120001
-
-  peer0.issuer.nck.com:
-    # this URL is used to send endorsement and query requests
-    url: grpc://localhost:10151
-
-    grpcOptions:
-      ssl-target-name-override: peer0.issuer.nck.com
-      request-timeout: 120001
-
-  peer1.issuer.nck.com:
-    # this URL is used to send endorsement and query requests
-    url: grpc://localhost:10251
-
-    grpcOptions:
-      ssl-target-name-override: peer1.issuer.nck.com
-      request-timeout: 120001
-
   peer0.supplier.nck.com:
     # this URL is used to send endorsement and query requests
     url: grpc://localhost:9051
@@ -141,34 +109,8 @@ peers:
 # Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
 #
 certificateAuthorities:
-  ca-warehouse:
-    url: http://localhost:7054
-    # the properties specified under this object are passed to the 'http' client verbatim when
-    # making the request to the Fabric-CA server
-    httpOptions:
-      verify: false
-
-    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
-    # needed to enroll and invoke new users.
-    registrar:
-      - enrollId: admin
-        enrollSecret: adminpw
-
-  ca-issuer:
-    url: http://localhost:9054
-    # the properties specified under this object are passed to the 'http' client verbatim when
-    # making the request to the Fabric-CA server
-    httpOptions:
-      verify: false
-
-    # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
-    # needed to enroll and invoke new users.
-    registrar:
-      - enrollId: admin
-        enrollSecret: adminpw
-
   ca-supplier:
-    url: http://localhost:10154
+    url: http://localhost:9054
     # the properties specified under this object are passed to the 'http' client verbatim when
     # making the request to the Fabric-CA server
     httpOptions:
