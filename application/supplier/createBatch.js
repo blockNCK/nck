@@ -18,7 +18,6 @@ SPDX-License-Identifier: Apache-2.0
 const fs = require('fs');
 const yaml = require('js-yaml');
 const { FileSystemWallet, Gateway } = require('fabric-network');
-const NCKContract = require('../../smartcontracts/lib/nckcontract.js');
 
 // A wallet stores a collection of identities for use
 const wallet = new FileSystemWallet('../identity/user/adam/wallet');
