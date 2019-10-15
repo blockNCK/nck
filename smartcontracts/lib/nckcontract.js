@@ -15,7 +15,7 @@ class NCKContract extends Contract {
                RFIDtag: '5432565466',
                drugName: 'inferon',
                amount: '50',
-               organization: 'yekinto',
+               organization: 'ACME',
                dateManufactured: '2019-03-04',
                dateExpired: '2020-05-20',
                minTemp: '15',
@@ -25,7 +25,7 @@ class NCKContract extends Contract {
                 RFIDtag: '4324987425',
                 drugName: 'teriperatide',
                 amount: '100',
-                organization: 'tomorotz',
+                organization: 'yekinto',
                 dateManufactured: '2019-06-24',
                 dateExpired: '2020-12-30',
                 minTemp: '10',
@@ -35,7 +35,7 @@ class NCKContract extends Contract {
                 RFIDtag: '4324947283',
                 drugName: 'Erythromycin',
                 amount: '150',
-                organization: 'tomorotz',
+                organization: 'zeeBo',
                 dateManufactured: '2019-07-20',
                 dateExpired: '2019-12-05',
                 minTemp: '15',
@@ -55,7 +55,7 @@ class NCKContract extends Contract {
                 RFIDtag: '76487865368',
                 drugName: 'Alkeran',
                 amount: '100',
-                organization: 'weton',
+                organization: 'ZeeBo',
                 dateManufactured: '2019-08-20',
                 dateExpired: '2019-12-10',
                 minTemp: '25',
@@ -65,7 +65,7 @@ class NCKContract extends Contract {
                 RFIDtag: '8447248953',
                 drugName: 'Ritonavir',
                 amount: '30',
-                organization: 'borex',
+                organization: 'ACME',
                 dateManufactured: '2019-03-15',
                 dateExpired: '2019-10-12',
                 minTemp: '14',
@@ -75,7 +75,7 @@ class NCKContract extends Contract {
                 RFIDtag: '8535893582',
                 drugName: 'VePesid',
                 amount: '80',
-                organization: 'gorongo',
+                organization: 'yekinto',
                 dateManufactured: '2019-07-05',
                 dateExpired: '2020-02-20',
                 minTemp: '23',
@@ -85,7 +85,7 @@ class NCKContract extends Contract {
                 RFIDtag: '7434574523',
                 drugName: 'Neupogen',
                 amount: '100',
-                organization: 'gorongo',
+                organization: 'ACME',
                 dateManufactured: '2019-10-23',
                 dateExpired: '2020-10-23',
                 minTemp: '20',
@@ -95,7 +95,7 @@ class NCKContract extends Contract {
                 RFIDtag: '8746296537',
                 drugName: 'Procrit',
                 amount: '50',
-                organization: 'voeltoty',
+                organization: 'Yekinto',
                 dateManufactured: '2019-10-20',
                 dateExpired: '2020-12-05',
                 minTemp: '17',
@@ -105,7 +105,7 @@ class NCKContract extends Contract {
                 RFIDtag: '46793579024',
                 drugName: 'Sandostatin',
                 amount: '100',
-                organization: 'quient',
+                organization: 'yekinto',
                 dateManufactured: '2019-04-05',
                 dateExpired: '2020-05-10',
                 minTemp: '19',
@@ -136,7 +136,7 @@ class NCKContract extends Contract {
         console.info('=======================================');
         console.log(batchAsBytes.toString());
         console.info('=======================================');
-        return batchAsbytes;
+        return batchAsbytes.toString();
     }
 
   // =====================================================
@@ -239,9 +239,128 @@ class NCKContract extends Contract {
         console.info('- start getHistoryForBatch: %s\n', RFIDtag);  
         let resultsIterator = await ctx.stub.getHistoryForKey(RFIDtag);
         let results = await this.getAllResults(resultsIterator, true);   
-        return Buffer.from(JSON.stringify(results));
+        return JSON.stringify(results);
 
-    }    
+    } 
+
+    async readBatch(ctx, RFIDtag) {
+      let resultsIterator = await ctx.stub.getHistoryForKey(RFIDtag);
+      if(!resultsIterator || resultsIterator.length ===0) {
+        throw new Error('${RFIDtag} does not exist');
+      }
+      let results = await this.getAllResults(resultsIterator, true);
+      console.info('===========History for the batch ================');
+      console.log(results.toString());
+      console.info('=================================================');
+      return results.toString();
+
+    }
+    
+  // ==================================================
+  // delete - remove a batch key/value pair from state
+  // ==================================================
+  async delete(ctx, RFIDbatchtag) {
+
+    if (!RFIDbatchtag) {
+      throw new Error('RFID batch tag must not be empty');
+    }
+    // to maintain the color~name index, we need to read the marble first and get its color
+    let RFIDBatchAsbytes = await ctx.stub.getState(RFIDbatchtag); //get the marble from chaincode state
+    let jsonResp = {};
+    if (!RFIDBatchAsbytes) {
+      jsonResp.error = 'batch does not exist: ' + RFIDbatchtag;
+      throw new Error(jsonResp);
+    }
+    let batchJSON = {};
+    try {
+      batchJSON = JSON.parse(RFIDbatchtag.toString());
+    } catch (err) {
+      jsonResp = {};
+      jsonResp.error = 'Failed to decode JSON of: ' + RFIDbatchtag;
+      throw new Error(jsonResp);
+    }
+
+    await stub.deleteState(RFIDbatchtag); //remove the marble from chaincode state
+
+    // delete the index 
+    let indexName = 'drugName ~ RFIDtag';
+    let nameTagIndexKey = ctx.stub.createCompositeKey(indexName, [batchJSON.drugName, batchJSON.RFIDtag]);
+    if (!nameTagIndexKey) {
+      throw new Error(' Failed to create the createCompositeKey');
+    }
+    //  Delete index entry to state.
+    await ctx.stub.deleteState(nameTagIndexKey);
+
+  }
+
+  async queryAllBatches(ctx, startKey, endKey) {
+
+    const iterator = await ctx.stub.getStateByRange(startKey, endKey);
+
+    const allResults = [];
+    while (true) {
+        const res = await iterator.next();
+
+        if (res.value && res.value.value.toString()) {
+            console.log(res.value.value.toString('utf8'));
+
+            const Key = res.value.key;
+            let Record;
+            try {
+                Record = JSON.parse(res.value.value.toString('utf8'));
+            } catch (err) {
+                console.log(err);
+                Record = res.value.value.toString('utf8');
+            }
+            allResults.push({ Key, Record });
+        }
+        if (res.done) {
+            console.log('end of data');
+            await iterator.close();
+            console.info(allResults);
+            return JSON.stringify(allResults);
+        }
+    }
+  }
+
+  async transferBatchOnName(ctx, name, newOrganization) {
+
+    console.info('- start transferBatchBasedOnName ', name, newOrganization);
+
+    // Query the name ~ tag index by name
+    // This will execute a key range query on all keys starting with 'drug name'
+    let drugTagResultsIterator = await ctx.stub.getStateByPartialCompositeKey('drugName ~ RFIDtag', [name]);
+
+    let method = this.transferBatch;
+    // Iterate through result set and for each batch found, transfer to newOrganization
+    while (true) {
+      let responseRange = await drugTagResultsIterator.next();
+      if (!responseRange || !responseRange.value || !responseRange.value.key) {
+        return;
+      }
+      console.log(responseRange.value.key);
+
+      // let value = res.value.value.toString('utf8');
+      let objectType;
+      let attributes;
+      ({
+        objectType,
+        attributes
+      } = await ctx.stub.splitCompositeKey(responseRange.value.key));
+
+      let returnedDrugName = attributes[0];
+      let returnedbatch = attributes[1];
+      console.info(util.format('- found a batch from index:%s drug name:%s batch:%s\n', objectType, returnedbatch, returnedDrugName));
+
+      // Now call the transfer function for the found batch.
+      // Re-use the same function that is used to transfer individual batch
+      let response = await method(ctx.stub, [returnedbatch, newOrganization]);
+      console.info(response);
+    }
+
+    let responsePayload = util.format('Transferred %s batch to %s', name, newOrganization);
+    console.info('- end transferBatchBasedOnName: ' + responsePayload);
+  }
 
 }
 

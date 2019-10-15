@@ -49,8 +49,8 @@ async function main () {
         await gateway.connect(connectionProfile, connectionOptions);
         const network = await gateway.getNetwork('nckchannel');
         const contract = await network.getContract('nckcc');
-        const buyResponse = await contract.submitTransaction('createBatch', '126575953', 'Neupogen', '60', 'quient', '2019-08-15', '2020-01-12', '12', '17');
-        
+        const buyResponse = await contract.submitTransaction('transferBatch', '46793579024','voeltoty');
+
     } catch (error) {
 
         console.log(`Error processing transaction. ${error}`);
@@ -66,11 +66,11 @@ async function main () {
 }
 main().then(() => {
 
-    console.log('Create batch complete.');
+    console.log('Transport batch complete.');
 
 }).catch((e) => {
 
-    console.log('create program exception.');
+    console.log('transport program exception.');
     console.log(e);
     console.log(e.stack);
     process.exit(-1);

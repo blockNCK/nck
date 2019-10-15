@@ -2,16 +2,6 @@
 SPDX-License-Identifier: Apache-2.0
 */
 
-/*
- * This application has 6 basic steps:
- * 1. Select an identity from a wallet
- * 2. Connect to network gateway
- * 3. Access PaperNet network
- * 4. Construct request to issue commercial paper
- * 5. Submit transaction
- * 6. Process response
- */
-
 'use strict';
 
 // Bring key classes into scope, most importantly Fabric SDK network class
@@ -20,7 +10,7 @@ const yaml = require('js-yaml');
 const { FileSystemWallet, Gateway } = require('fabric-network');
 
 // A wallet stores a collection of identities for use
-const wallet = new FileSystemWallet('../identity/user/adam/wallet');
+const wallet = new FileSystemWallet('../identity/user/nick/wallet');
 
 // Main program function
 async function main () {
@@ -32,7 +22,7 @@ async function main () {
     try {
 
         // Specify userName for network access
-        const userName = 'Admin@supplier.nck.com';
+        const userName = 'Admin@warehouse.nck.com';
 
         // Load connection profile; will be used to locate a gateway
         let connectionProfile = yaml.safeLoad(fs.readFileSync('./gateway/networkConnection.yaml', 'utf8'));
@@ -49,8 +39,8 @@ async function main () {
         await gateway.connect(connectionProfile, connectionOptions);
         const network = await gateway.getNetwork('nckchannel');
         const contract = await network.getContract('nckcc');
-        const buyResponse = await contract.submitTransaction('createBatch', '126575953', 'Neupogen', '60', 'quient', '2019-08-15', '2020-01-12', '12', '17');
-        
+        const buyResponse = await contract.submitTransaction('transferBatchOnName', 'inferon','nova');
+
     } catch (error) {
 
         console.log(`Error processing transaction. ${error}`);

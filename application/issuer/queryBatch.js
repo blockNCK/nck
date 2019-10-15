@@ -32,7 +32,7 @@ async function main () {
     try {
 
         // Specify userName for network access
-        const userName = 'Admin@supplier.nck.com';
+        const userName = 'Admin@issuer.nck.com';
 
         // Load connection profile; will be used to locate a gateway
         let connectionProfile = yaml.safeLoad(fs.readFileSync('./gateway/networkConnection.yaml', 'utf8'));
@@ -49,8 +49,8 @@ async function main () {
         await gateway.connect(connectionProfile, connectionOptions);
         const network = await gateway.getNetwork('nckchannel');
         const contract = await network.getContract('nckcc');
-        const buyResponse = await contract.submitTransaction('createBatch', '126575953', 'Neupogen', '60', 'quient', '2019-08-15', '2020-01-12', '12', '17');
-        
+        const buyResponse = await contract.submitTransaction('queryBatch', '46793579024');
+
     } catch (error) {
 
         console.log(`Error processing transaction. ${error}`);
