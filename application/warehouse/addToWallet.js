@@ -22,7 +22,7 @@ async function main() {
         // Identity to credentials to be stored in the wallet
         const credPath = path.join(fixtures, '/crypto-config/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com');
         const cert = fs.readFileSync(path.join(credPath, '/msp/signcerts/Admin@warehouse.nck.com-cert.pem')).toString();
-        const key = fs.readFileSync(path.join(credPath, '/msp/keystore/861d26d2ca872d183ecdfe6a14a8f535460bc7a930f1ed6107058771b42dcb54_sk')).toString();
+        const key = fs.readFileSync(path.join(credPath, '/msp/keystore/dd0eddbde5d6c997b84abcbdb73ba334ca10b780109c1fd112215c563022c711_sk')).toString();
 
         // Load credentials into wallet
         const identityLabel = 'Admin@warehouse.nck.com';
