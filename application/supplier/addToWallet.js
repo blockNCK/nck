@@ -22,16 +22,10 @@ async function main() {
         // Identity to credentials to be stored in the wallet
         const credPath = path.join(fixtures, '/crypto-config/peerOrganizations/supplier.nck.com/users/Admin@supplier.nck.com');
         const cert = fs.readFileSync(path.join(credPath, '/msp/signcerts/Admin@supplier.nck.com-cert.pem')).toString();
-        var key;
-        fs.readdirSync(path.join(credPath, '/msp/keystore/'), function (err, files) {
-            if (err) {
-                return console.log('Unable to scan directory: ' + err);
-            } 
-            files.forEach(function (file) {
-                console.log(file);
-                key = fs.readFileSync(path.join(credPath, '/msp/keystore/' , file)).toString();
-            });
-        });
+        
+        var file=fs.readdirSync(path.join(credPath, '/msp/keystore/'));
+        var key = fs.readFileSync(path.join(credPath, '/msp/keystore/' , file)).toString();
+
         console.log(key);
         // Load credentials into wallet
         const identityLabel = 'Admin@supplier.nck.com';
