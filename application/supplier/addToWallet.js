@@ -31,7 +31,7 @@ async function main() {
             //listing all files using forEach
             files.forEach(function (file) {
                 // Do whatever you want to do with the file
-                key = fs.readFileSync(path.join(credPath, '/msp/keystore/' , filename)).toString();
+                key = fs.readFileSync(path.join(credPath, '/msp/keystore/' , file)).toString();
             });
         });
 
