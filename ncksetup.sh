@@ -6,6 +6,8 @@ echo " | .   | |    |  <       | .   |  __|    | |    \ \/  \/ /| |  | |  _  /| 
 echo " | |\  | |____| . \      | |\  | |____   | |     \  /\  / | |__| | | \ \| . \   "
 echo " |_| \_|\_____|_|\_|     |_| \_|______|  |_|      \/  \/   \____/|_|  \_\_|\_\  "
 echo ""
+
+cd nck-network
 chmod +x cryptogen
 chmod +x configtxgen
 
@@ -13,7 +15,7 @@ export SYS_CHANNEL=byfn-sys-channel
 export COMPOSE_PROJECT_NAME=nck
 export CHANNEL_NAME=nckchannel
 
-cd nck-network
+
 #---------------------------------------------------------------------------------------------------------
 #                                       Network creation
 #---------------------------------------------------------------------------------------------------------
