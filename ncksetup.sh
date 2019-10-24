@@ -257,13 +257,14 @@ docker exec \
 #==================================================
 #       invoke chaincode
 #==================================================
-echo "invode chaincode"
+echo "invoke chaincode"
 docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="WarehouseMSP" \
   -e CORE_PEER_ADDRESS=peer0.warehouse.nck.com:7051 \
   -e CORE_PEER_MSPCONFIGPATH=${WAREHOUSE_MSPCONFIGPATH} \
   -e CORE_PEER_TLS_ROOTCERT_FILE=${WAREHOUSE_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_GOSSIP_USELEADERELECTION=true \
   cli \
   peer chaincode invoke \
     -o orderer.nck.com:7050 \
