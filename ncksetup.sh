@@ -29,7 +29,7 @@ export CHANNEL_NAME=nckchannel
 
 echo "create generate necessary crypto files"
 ./cryptogen generate --config=./crypto-config.yaml
-sleep 2
+
 
 #==================================================
 #       artifacts creation
@@ -39,11 +39,11 @@ mkdir channel-artifacts
 
 echo "Generate genesis block"
 ./configtxgen -profile TwoOrgsOrdererGenesis -channelID $SYS_CHANNEL -outputBlock ./channel-artifacts/genesis.block
-sleep 2
+
 
 echo "Generate channel artifacts"
 ./configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
-sleep 2
+
 
 echo "Create anchor peers of the organizations"
 ./configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/WarehouseMSPanchors.tx -channelID nckchannel -asOrg WarehouseMSP
@@ -51,7 +51,7 @@ echo "Create anchor peers of the organizations"
 ./configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/IssuerMSPanchors.tx -channelID nckchannel -asOrg IssuerMSP
 
 ./configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/SupplierMSPanchors.tx -channelID nckchannel -asOrg SupplierMSP
-sleep 2
+
 
 #==================================================
 #       Docker environment setup
@@ -95,7 +95,7 @@ docker exec \
     -f ./channel-artifacts/channel.tx \
     --tls --cafile $ORDERER_TLS_ROOTCERT_FILE
 
-sleep 2
+
 echo "install in the warehouse organization"
 docker exec \
   -e CHANNEL_NAME=nckchannel \
@@ -107,7 +107,7 @@ docker exec \
   peer channel join \
     -b nckchannel.block 
 
-sleep 2
+
 echo "install in the supplier organization"
 docker exec \
   -e CHANNEL_NAME=nckchannel \
@@ -119,7 +119,7 @@ docker exec \
   peer channel join \
   -b nckchannel.block 
 
-sleep 2
+
 echo "install in the issuer organization"
 docker exec \
   -e CHANNEL_NAME=nckchannel \
@@ -134,7 +134,7 @@ docker exec \
 #==================================================
 #       Definition of anchor peers
 #==================================================
-sleep 2
+
 echo "Definition of warehouse anchor peer"
 docker exec \
   -e CHANNEL_NAME=nckchannel \
@@ -176,7 +176,7 @@ docker exec \
   -c $CHANNEL_NAME \
   -f ./channel-artifacts/IssuerMSPanchors.tx \
   --tls --cafile ${ORDERER_TLS_ROOTCERT_FILE} 
-sleep 2
+
 
 #---------------------------------------------------------------------------------------------------------
 #                                       Chaincode creation
@@ -200,7 +200,7 @@ docker exec \
   -l node \
   -p /opt/gopath/src/github.com/contract
 
-sleep 2
+
 echo "install chaincode in the supplier peers"
 docker exec \
   -e CHANNEL_NAME=nckchannel \
@@ -215,7 +215,7 @@ docker exec \
    -l node \
    -p /opt/gopath/src/github.com/contract
 
-sleep 2
+
 echo "install chaincode in the issuer peers"
 docker exec \
   -e CHANNEL_NAME=nckchannel \
@@ -252,7 +252,7 @@ docker exec \
     --cafile ${ORDERER_TLS_ROOTCERT_FILE} \
     --peerAddresses peer0.warehouse.nck.com:7051 \
     --tlsRootCertFiles ${WAREHOUSE_TLS_ROOTCERT_FILE} 
-sleep 2
+
 
 #==================================================
 #       invoke chaincode
