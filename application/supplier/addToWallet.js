@@ -22,7 +22,7 @@ async function main() {
         // Identity to credentials to be stored in the wallet
         const credPath = path.join(fixtures, '/crypto-config/peerOrganizations/supplier.nck.com/users/Admin@supplier.nck.com');
         const cert = fs.readFileSync(path.join(credPath, '/msp/signcerts/Admin@supplier.nck.com-cert.pem')).toString();
-        const key;
+        var key;
         fs.readdir(path.join(credPath, '/msp/keystore/', function(filenames) {
             filenames.forEach(function(filename) {
                  key = fs.readFileSync(credPath, '/msp/keystore/' + filename).toString();
