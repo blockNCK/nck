@@ -23,7 +23,7 @@ async function main() {
         const credPath = path.join(fixtures, '/crypto-config/peerOrganizations/supplier.nck.com/users/Admin@supplier.nck.com');
         const cert = fs.readFileSync(path.join(credPath, '/msp/signcerts/Admin@supplier.nck.com-cert.pem')).toString();
         var key;
-        fs.readdir(path.join(credPath, '/msp/keystore/'), function (err, files) {
+        fs.readdirSync(path.join(credPath, '/msp/keystore/'), function (err, files) {
             if (err) {
                 return console.log('Unable to scan directory: ' + err);
             } 
