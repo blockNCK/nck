@@ -24,9 +24,8 @@ async function main() {
         const cert = fs.readFileSync(path.join(credPath, '/msp/signcerts/Admin@supplier.nck.com-cert.pem')).toString();
         
         var file = fs.readdirSync(path.join(credPath, '/msp/keystore/'));
-        var key = fs.readFileSync(path.join(credPath, '/msp/keystore/' , file[0])).toString();
+        const key = fs.readFileSync(path.join(credPath, '/msp/keystore/' , file[0].toString())).toString();
 
-        console.log(key);
         // Load credentials into wallet
         const identityLabel = 'Admin@supplier.nck.com';
         const identity = X509WalletMixin.createIdentity('SupplierMSP', cert, key);

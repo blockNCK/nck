@@ -32,7 +32,7 @@ export CHANNEL_NAME=nckchannel
 #       crypto generation
 #==================================================
 
-echo "create generate necessary crypto files"
+echo "Generate necessary crypto files"
 ./cryptogen generate --config=./crypto-config.yaml
 readiness_probe
 
