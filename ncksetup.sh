@@ -290,3 +290,22 @@ docker exec \
     --tlsRootCertFiles ${SUPPLIER_TLS_ROOTCERT_FILE} \
     --tlsRootCertFiles ${ISSUER_TLS_ROOTCERT_FILE}
 readiness_probe
+
+#---------------------------------------------------------------------------------------------------------
+#                                       Application creation
+#---------------------------------------------------------------------------------------------------------
+#
+#cd ..
+#cd application/supplier
+
+#echo "This is an example of an instance of a batch transported through a supply chain."
+#echo "install necessary packages for supplier"
+#npm install
+
+#sleep 5
+#echo "create the wallet of Adam from Aurora suppliers"
+#node addToWallet.js
+
+#sleep 5
+#echo "To create a batch invoke createBatch.js "
+#node createBatch.js
