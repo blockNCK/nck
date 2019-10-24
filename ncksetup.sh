@@ -10,6 +10,11 @@ echo " | |\  | |____| . \      | |\  | |____   | |     \  /\  / | |__| | | \ \| 
 echo " |_| \_|\_____|_|\_|     |_| \_|______|  |_|      \/  \/   \____/|_|  \_\_|\_\  "
 echo ""
 
+#wait till the function completes the action
+readiness_probe(){
+  sleep 3
+}
+
 cd nck-network
 chmod +x cryptogen
 chmod +x configtxgen
@@ -29,7 +34,7 @@ export CHANNEL_NAME=nckchannel
 
 echo "create generate necessary crypto files"
 ./cryptogen generate --config=./crypto-config.yaml
-
+readiness_probe
 
 #==================================================
 #       artifacts creation
@@ -39,11 +44,11 @@ mkdir channel-artifacts
 
 echo "Generate genesis block"
 ./configtxgen -profile TwoOrgsOrdererGenesis -channelID $SYS_CHANNEL -outputBlock ./channel-artifacts/genesis.block
-
+readiness_probe
 
 echo "Generate channel artifacts"
 ./configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
-
+readiness_probe
 
 echo "Create anchor peers of the organizations"
 ./configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/WarehouseMSPanchors.tx -channelID nckchannel -asOrg WarehouseMSP
@@ -51,7 +56,7 @@ echo "Create anchor peers of the organizations"
 ./configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/IssuerMSPanchors.tx -channelID nckchannel -asOrg IssuerMSP
 
 ./configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/SupplierMSPanchors.tx -channelID nckchannel -asOrg SupplierMSP
-
+readiness_probe
 
 #==================================================
 #       Docker environment setup
@@ -64,7 +69,7 @@ export CHANNEL_NAME=nckchannel
 
 echo "pull latest images for the cli"
 docker-compose -f docker-compose-cli.yaml up -d
-
+readiness_probe
 
 export WAREHOUSE_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com/msp
 export WAREHOUSE_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt
@@ -94,7 +99,7 @@ docker exec \
     -c $CHANNEL_NAME \
     -f ./channel-artifacts/channel.tx \
     --tls --cafile $ORDERER_TLS_ROOTCERT_FILE
-
+readiness_probe
 
 echo "install in the warehouse organization"
 docker exec \
@@ -106,7 +111,7 @@ docker exec \
   cli \
   peer channel join \
     -b nckchannel.block 
-
+readiness_probe
 
 echo "install in the supplier organization"
 docker exec \
@@ -118,7 +123,7 @@ docker exec \
   cli \
   peer channel join \
   -b nckchannel.block 
-
+readiness_probe
 
 echo "install in the issuer organization"
 docker exec \
@@ -130,6 +135,7 @@ docker exec \
   cli \
   peer channel join \
   -b nckchannel.block 
+readiness_probe
 
 #==================================================
 #       Definition of anchor peers
@@ -148,6 +154,7 @@ docker exec \
     -c $CHANNEL_NAME \
     -f ./channel-artifacts/WarehouseMSPanchors.tx \
     --tls --cafile $ORDERER_TLS_ROOTCERT_FILE 
+readiness_probe
 
 echo "Definition of supplier anchor peer"
 docker exec \
@@ -162,6 +169,7 @@ docker exec \
     -c $CHANNEL_NAME \
     -f ./channel-artifacts/SupplierMSPanchors.tx \
     --tls --cafile $ORDERER_TLS_ROOTCERT_FILE 
+readiness_probe
 
 echo "Definition of issuer anchor peer"
 docker exec \
@@ -176,7 +184,7 @@ docker exec \
   -c $CHANNEL_NAME \
   -f ./channel-artifacts/IssuerMSPanchors.tx \
   --tls --cafile ${ORDERER_TLS_ROOTCERT_FILE} 
-
+readiness_probe
 
 #---------------------------------------------------------------------------------------------------------
 #                                       Chaincode creation
@@ -199,7 +207,7 @@ docker exec \
   -v 1.0 \
   -l node \
   -p /opt/gopath/src/github.com/contract
-
+readiness_probe
 
 echo "install chaincode in the supplier peers"
 docker exec \
@@ -214,7 +222,7 @@ docker exec \
    -v 1.0 \
    -l node \
    -p /opt/gopath/src/github.com/contract
-
+readiness_probe
 
 echo "install chaincode in the issuer peers"
 docker exec \
@@ -229,6 +237,7 @@ docker exec \
    -v 1.0 \
    -l node \
    -p /opt/gopath/src/github.com/contract
+readiness_probe
 
 #==================================================
 #       Instantiate chaincode
@@ -252,7 +261,7 @@ docker exec \
     --cafile ${ORDERER_TLS_ROOTCERT_FILE} \
     --peerAddresses peer0.warehouse.nck.com:7051 \
     --tlsRootCertFiles ${WAREHOUSE_TLS_ROOTCERT_FILE} 
-
+readiness_probe
 
 #==================================================
 #       invoke chaincode
@@ -280,3 +289,4 @@ docker exec \
     --tlsRootCertFiles ${WAREHOUSE_TLS_ROOTCERT_FILE} \
     --tlsRootCertFiles ${SUPPLIER_TLS_ROOTCERT_FILE} \
     --tlsRootCertFiles ${ISSUER_TLS_ROOTCERT_FILE}
+readiness_probe
