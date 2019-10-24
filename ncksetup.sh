@@ -252,7 +252,7 @@ docker exec \
     --cafile ${ORDERER_TLS_ROOTCERT_FILE} \
     --peerAddresses peer0.warehouse.nck.com:7051 \
     --tlsRootCertFiles ${WAREHOUSE_TLS_ROOTCERT_FILE} 
-sleep 60
+sleep 10
 
 #==================================================
 #       invoke chaincode
@@ -279,7 +279,7 @@ docker exec \
     --tlsRootCertFiles ${WAREHOUSE_TLS_ROOTCERT_FILE} \
     --tlsRootCertFiles ${SUPPLIER_TLS_ROOTCERT_FILE} \
     --tlsRootCertFiles ${ISSUER_TLS_ROOTCERT_FILE}
-sleep 2m
+sleep 20
 
 #---------------------------------------------------------------------------------------------------------
 #                                       Application creation
