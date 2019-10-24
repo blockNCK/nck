@@ -24,17 +24,15 @@ async function main() {
         const cert = fs.readFileSync(path.join(credPath, '/msp/signcerts/Admin@supplier.nck.com-cert.pem')).toString();
         var key;
         fs.readdir(path.join(credPath, '/msp/keystore/'), function (err, files) {
-            //handling error
             if (err) {
                 return console.log('Unable to scan directory: ' + err);
             } 
-            //listing all files using forEach
             files.forEach(function (file) {
-                // Do whatever you want to do with the file
+                console.log(file);
                 key = fs.readFileSync(path.join(credPath, '/msp/keystore/' , file)).toString();
             });
         });
-        console.log(key)
+        console.log(key);
         // Load credentials into wallet
         const identityLabel = 'Admin@supplier.nck.com';
         const identity = X509WalletMixin.createIdentity('SupplierMSP', cert, key);
