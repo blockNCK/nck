@@ -23,9 +23,15 @@ async function main() {
         const credPath = path.join(fixtures, '/crypto-config/peerOrganizations/supplier.nck.com/users/Admin@supplier.nck.com');
         const cert = fs.readFileSync(path.join(credPath, '/msp/signcerts/Admin@supplier.nck.com-cert.pem')).toString();
         var key;
-        fs.readdir(path.join(credPath, '/msp/keystore/'), function(filenames) {
-            filenames.forEach(function(filename) {
-                 key = fs.readFileSync(path.join(credPath, '/msp/keystore/' + filename)).toString();
+        fs.readdir(path.join(credPath, '/msp/keystore/'), function (err, files) {
+            //handling error
+            if (err) {
+                return console.log('Unable to scan directory: ' + err);
+            } 
+            //listing all files using forEach
+            files.forEach(function (file) {
+                // Do whatever you want to do with the file
+                key = fs.readFileSync(path.join(credPath, '/msp/keystore/' , filename)).toString();
             });
         });
 
