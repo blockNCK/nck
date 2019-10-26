@@ -20,7 +20,7 @@ const yaml = require('js-yaml');
 const { FileSystemWallet, Gateway } = require('fabric-network');
 
 // A wallet stores a collection of identities for use
-const wallet = new FileSystemWallet('../identity/user/adam/wallet');
+const wallet = new FileSystemWallet('../identity/user/susan/wallet');
 
 // Main program function
 async function main () {
