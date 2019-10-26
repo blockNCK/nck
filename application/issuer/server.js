@@ -2,7 +2,7 @@
 
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 3030
 var bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -13,7 +13,7 @@ const yaml = require('js-yaml');
 const { FileSystemWallet, Gateway } = require('fabric-network');
 
 // A wallet stores a collection of identities for use
-const wallet = new FileSystemWallet('../identity/user/adam/wallet');
+const wallet = new FileSystemWallet('../identity/user/susan/wallet');
 
 app.use(express.static('../public'));
 
@@ -83,7 +83,7 @@ app.get('/api/find', async (req, res) => {
     try {
 
         // Specify userName for network access
-        const userName = 'Admin@supplier.nck.com';
+        const userName = 'Admin@issuer.nck.com';
 
         // Load connection profile; will be used to locate a gateway
         let connectionProfile = yaml.safeLoad(fs.readFileSync('./gateway/networkConnection.yaml', 'utf8'));
@@ -95,7 +95,6 @@ app.get('/api/find', async (req, res) => {
             discovery: { enabled: false, asLocalhost: true }
 
         };
-
 
         await gateway.connect(connectionProfile, connectionOptions);
         const network = await gateway.getNetwork('nckchannel');
