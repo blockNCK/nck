@@ -15,7 +15,7 @@ const { FileSystemWallet, Gateway } = require('fabric-network');
 // A wallet stores a collection of identities for use
 const wallet = new FileSystemWallet('../identity/user/adam/wallet');
 
-app.use(express.static('public'));
+app.use(express.static('../public'));
 
 app.post('/api/addbatch', async (req, res) => {
     // A gateway defines the peers used to access Fabric networks
