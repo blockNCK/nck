@@ -99,7 +99,7 @@ app.get('/api/find', async (req, res) => {
         const contract = await network.getContract('nckcc');
         const result = await contract.evaluateTransaction('getHistoryForBatch', id);
         console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
-        res.status(200).json(result);
+        res.status(200).json(result.toString());
     } catch (error) {
 
         console.log(`Error processing transaction. ${error}`);
