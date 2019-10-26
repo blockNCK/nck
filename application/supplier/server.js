@@ -17,7 +17,7 @@ const wallet = new FileSystemWallet('../identity/user/adam/wallet');
 
 app.use(express.static('public'));
 
-app.post('/api/addbatch', (req, res) => {
+app.post('/api/addbatch', async (req, res) => {
     // A gateway defines the peers used to access Fabric networks
     const gateway = new Gateway();
 
@@ -65,7 +65,7 @@ app.post('/api/addbatch', (req, res) => {
     }
 });
 
-app.get('/api/find', (req, res) => {
+app.get('/api/find', async (req, res) => {
     const id = req.query.batchId;
 
     if (id === '') {
