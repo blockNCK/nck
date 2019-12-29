@@ -17,6 +17,8 @@ class NCKContract extends Contract {
                amount: '50',
                organization: 'ACME',
                dateManufactured: '2019-03-04',
+               dateSupplied: '0',
+               dateIssued: '0',
                dateExpired: '2020-05-20',
                minTemp: '15',
                maxTemp: '20',
@@ -27,6 +29,8 @@ class NCKContract extends Contract {
                 amount: '100',
                 organization: 'yekinto',
                 dateManufactured: '2019-06-24',
+                dateSupplied: '0',
+                dateIssued: '0',
                 dateExpired: '2020-12-30',
                 minTemp: '10',
                 maxTemp: '20',
@@ -37,6 +41,8 @@ class NCKContract extends Contract {
                 amount: '150',
                 organization: 'zeeBo',
                 dateManufactured: '2019-07-20',
+                dateSupplied: '0',
+                dateIssued: '0',
                 dateExpired: '2019-12-05',
                 minTemp: '15',
                 maxTemp: '23',
@@ -47,6 +53,8 @@ class NCKContract extends Contract {
                 amount: '50',
                 organization: 'yekinto',
                 dateManufactured: '2019-03-04',
+                dateSupplied: '0',
+                dateIssued: '0',
                 dateExpired: '2020-05-20',
                 minTemp: '15',
                 maxTemp: '20',
@@ -57,6 +65,8 @@ class NCKContract extends Contract {
                 amount: '100',
                 organization: 'ZeeBo',
                 dateManufactured: '2019-08-20',
+                dateSupplied: '0',
+                dateIssued: '0',
                 dateExpired: '2019-12-10',
                 minTemp: '25',
                 maxTemp: '30',
@@ -67,6 +77,8 @@ class NCKContract extends Contract {
                 amount: '30',
                 organization: 'ACME',
                 dateManufactured: '2019-03-15',
+                dateSupplied: '0',
+                dateIssued: '0',
                 dateExpired: '2019-10-12',
                 minTemp: '14',
                 maxTemp: '20',
@@ -77,6 +89,8 @@ class NCKContract extends Contract {
                 amount: '80',
                 organization: 'yekinto',
                 dateManufactured: '2019-07-05',
+                dateSupplied: '0',
+                dateIssued: '0',
                 dateExpired: '2020-02-20',
                 minTemp: '23',
                 maxTemp: '30',
@@ -87,6 +101,8 @@ class NCKContract extends Contract {
                 amount: '100',
                 organization: 'ACME',
                 dateManufactured: '2019-10-23',
+                dateSupplied: '0',
+                dateIssued: '0',
                 dateExpired: '2020-10-23',
                 minTemp: '20',
                 maxTemp: '25',
@@ -97,6 +113,8 @@ class NCKContract extends Contract {
                 amount: '50',
                 organization: 'Yekinto',
                 dateManufactured: '2019-10-20',
+                dateSupplied: '0',
+                dateIssued: '0',
                 dateExpired: '2020-12-05',
                 minTemp: '17',
                 maxTemp: '25',
@@ -107,6 +125,8 @@ class NCKContract extends Contract {
                 amount: '100',
                 organization: 'yekinto',
                 dateManufactured: '2019-04-05',
+                dateSupplied: '0',
+                dateIssued: '0',
                 dateExpired: '2020-05-10',
                 minTemp: '19',
                 maxTemp: '27',
@@ -142,7 +162,7 @@ class NCKContract extends Contract {
   // =====================================================
   // createBatch - create a batch and add to the chaincode
   // =====================================================
-    async createBatch(ctx, RFIDtag, drugName, amount, organization,dateManufactured, dateExpired, minTemp, maxTemp ) {
+    async createBatch(ctx, RFIDtag, drugName, amount, organization,dateManufactured, dateSupplied, dateIssued, dateExpired, minTemp, maxTemp ) {
       
         // ==== Check if batch already exists ====
         let drugbatchState = await ctx.stub.getState(RFIDtag);
@@ -160,6 +180,8 @@ class NCKContract extends Contract {
             amount,
             organization,
             dateManufactured,
+            dateSupplied,
+            dateIssued,
             dateExpired,
             minTemp,
             maxTemp,
@@ -360,6 +382,24 @@ class NCKContract extends Contract {
 
     let responsePayload = util.format('Transferred %s batch to %s', name, newOrganization);
     console.info('- end transferBatchBasedOnName: ' + responsePayload);
+  }
+
+  async getQueryResultForQueryString(ctx, queryString) {
+
+    console.info('- getQueryResultForQueryString queryString:\n' + queryString)
+    let resultsIterator = await ctx.stub.getQueryResult(queryString);
+    let results = await this.getAllResults(resultsIterator, true);
+    return JSON.stringify(results);
+  }
+
+  async queryBatchbyDrugName(ctx, drugName ) {
+    let drugName = drugName.toLowerCase();
+    let queryString = {};
+    queryString.selector = {};
+    queryString.selector.docType = 'batch';
+    queryString.selector.drugName = drugName;
+    let queryResults = await this.getQueryResultForQueryString(ctx, JSON.stringify(queryString))
+    return queryResults; 
   }
 
 }

@@ -50,6 +50,8 @@ echo "Generate channel artifacts"
 ./configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
 readiness_probe
 
+
+
 echo "Create anchor peers of the organizations"
 ./configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/WarehouseMSPanchors.tx -channelID nckchannel -asOrg WarehouseMSP
 
@@ -68,7 +70,8 @@ export COMPOSE_PROJECT_NAME=nck
 export CHANNEL_NAME=nckchannel
 
 echo "pull latest images for the cli"
-docker-compose -f docker-compose-cli.yaml up -d
+echo "use level db"
+docker-compose -f docker-compose-cli.yaml -f docker-compose-couch.yaml up -d
 readiness_probe
 
 export WAREHOUSE_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com/msp
@@ -309,3 +312,5 @@ readiness_probe
 #sleep 5
 #echo "To create a batch invoke createBatch.js "
 #node createBatch.js
+
+#http://localhost:5984/_utils

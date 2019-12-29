@@ -1,0 +1,1 @@
+{"index":{"fields":["docType","drugName"]},"ddoc":"indexDrugNameDoc", "name":"indexDrugName","type":"json"}
