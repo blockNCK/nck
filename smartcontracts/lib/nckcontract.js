@@ -17,8 +17,6 @@ class NCKContract extends Contract {
                amount: '50',
                organization: 'ACME',
                dateManufactured: '2019-03-04',
-               dateSupplied: '0',
-               dateIssued: '0',
                dateExpired: '2020-05-20',
                minTemp: '15',
                maxTemp: '20',
@@ -29,8 +27,6 @@ class NCKContract extends Contract {
                 amount: '100',
                 organization: 'yekinto',
                 dateManufactured: '2019-06-24',
-                dateSupplied: '0',
-                dateIssued: '0',
                 dateExpired: '2020-12-30',
                 minTemp: '10',
                 maxTemp: '20',
@@ -41,8 +37,6 @@ class NCKContract extends Contract {
                 amount: '150',
                 organization: 'zeeBo',
                 dateManufactured: '2019-07-20',
-                dateSupplied: '0',
-                dateIssued: '0',
                 dateExpired: '2019-12-05',
                 minTemp: '15',
                 maxTemp: '23',
@@ -53,8 +47,6 @@ class NCKContract extends Contract {
                 amount: '50',
                 organization: 'yekinto',
                 dateManufactured: '2019-03-04',
-                dateSupplied: '0',
-                dateIssued: '0',
                 dateExpired: '2020-05-20',
                 minTemp: '15',
                 maxTemp: '20',
@@ -65,8 +57,6 @@ class NCKContract extends Contract {
                 amount: '100',
                 organization: 'ZeeBo',
                 dateManufactured: '2019-08-20',
-                dateSupplied: '0',
-                dateIssued: '0',
                 dateExpired: '2019-12-10',
                 minTemp: '25',
                 maxTemp: '30',
@@ -77,8 +67,6 @@ class NCKContract extends Contract {
                 amount: '30',
                 organization: 'ACME',
                 dateManufactured: '2019-03-15',
-                dateSupplied: '0',
-                dateIssued: '0',
                 dateExpired: '2019-10-12',
                 minTemp: '14',
                 maxTemp: '20',
@@ -89,8 +77,6 @@ class NCKContract extends Contract {
                 amount: '80',
                 organization: 'yekinto',
                 dateManufactured: '2019-07-05',
-                dateSupplied: '0',
-                dateIssued: '0',
                 dateExpired: '2020-02-20',
                 minTemp: '23',
                 maxTemp: '30',
@@ -101,8 +87,6 @@ class NCKContract extends Contract {
                 amount: '100',
                 organization: 'ACME',
                 dateManufactured: '2019-10-23',
-                dateSupplied: '0',
-                dateIssued: '0',
                 dateExpired: '2020-10-23',
                 minTemp: '20',
                 maxTemp: '25',
@@ -113,8 +97,6 @@ class NCKContract extends Contract {
                 amount: '50',
                 organization: 'Yekinto',
                 dateManufactured: '2019-10-20',
-                dateSupplied: '0',
-                dateIssued: '0',
                 dateExpired: '2020-12-05',
                 minTemp: '17',
                 maxTemp: '25',
@@ -125,8 +107,6 @@ class NCKContract extends Contract {
                 amount: '100',
                 organization: 'yekinto',
                 dateManufactured: '2019-04-05',
-                dateSupplied: '0',
-                dateIssued: '0',
                 dateExpired: '2020-05-10',
                 minTemp: '19',
                 maxTemp: '27',
@@ -180,9 +160,9 @@ class NCKContract extends Contract {
             amount,
             organization,
             dateManufactured,
+            dateExpired,
             dateSupplied,
             dateIssued,
-            dateExpired,
             minTemp,
             maxTemp,
         };
@@ -398,8 +378,15 @@ class NCKContract extends Contract {
     queryString.selector = {};
     queryString.selector.docType = 'batch';
     queryString.selector.drugName = drugName;
-    let queryResults = await this.getQueryResultForQueryString(ctx, JSON.stringify(queryString))
-    return queryResults; 
+    let queryResults = await this.getQueryResultForQueryString(ctx, JSON.stringify(queryString));
+    let results = {};
+    for (i in queryResults.values) {
+      results[i].drugName = queryResults.values[i].drugName;
+      results[i].amount = queryResults.values[i].amount;
+      results[i].dateSupplied = queryResults.values[i].dateSupplied;
+      results[i].dateIssued = queryResults.values[i].dateIssued;
+    }
+    return results; 
   }
 
 }
