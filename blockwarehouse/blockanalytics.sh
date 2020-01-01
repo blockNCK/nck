@@ -33,3 +33,5 @@ chmod +x bin/database/mysql.sh
 ./mysql.sh query
 
 
+
+
