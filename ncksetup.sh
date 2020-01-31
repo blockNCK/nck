@@ -269,9 +269,9 @@ docker exec \
     -P "OR ('WarehouseMSP.peer')" \
     --tls \
     --cafile ${ORDERER_TLS_ROOTCERT_FILE} \
-    --peerAddresses peer0.warehouse.nck.com:7051 \
-    --tlsRootCertFiles ${WAREHOUSE_TLS_ROOTCERT_FILE} 
+
 readiness_probe
+
 
 #==================================================
 #       invoke chaincode
@@ -294,11 +294,7 @@ docker exec \
     --tls \
     --cafile ${ORDERER_TLS_ROOTCERT_FILE} \
     --peerAddresses peer0.warehouse.nck.com:7051 \
-    --peerAddresses peer0.supplier.nck.com:9051 \
-    --peerAddresses peer0.issuer.nck.com:10151 \
     --tlsRootCertFiles ${WAREHOUSE_TLS_ROOTCERT_FILE} \
-    --tlsRootCertFiles ${SUPPLIER_TLS_ROOTCERT_FILE} \
-    --tlsRootCertFiles ${ISSUER_TLS_ROOTCERT_FILE}
 readiness_probe
 
 #---------------------------------------------------------------------------------------------------------
