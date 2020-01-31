@@ -70,7 +70,7 @@ export COMPOSE_PROJECT_NAME=nck
 export CHANNEL_NAME=nckchannel
 
 echo "pull latest images for the cli"
-echo "use level db"
+echo "use couch db"
 docker-compose -f docker-compose-cli.yaml -f docker-compose-couch.yaml up -d
 readiness_probe
 

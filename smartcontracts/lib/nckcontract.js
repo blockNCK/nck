@@ -11,25 +11,72 @@ class NCKContract extends Contract {
     async initLedger(ctx) {
         console.info('============= START : Initialize Ledger ===========');
         const batch = [
-            {
+             {
                RFIDtag: '5432565466',
                drugName: 'inferon',
                amount: '50',
                organization: 'ACME',
                dateManufactured: '2019-03-04',
                dateExpired: '2020-05-20',
+               block: '1',
                minTemp: '15',
                maxTemp: '20',
-            },
-            {
+             },
+             {
+              RFIDtag: '5432565466',
+              drugName: 'inferon',
+              amount: '50',
+              organization: 'sup',
+              dateManufactured: '2019-03-04',
+              dateExpired: '2020-05-20',
+              block: '2',
+              minTemp: '21',
+              maxTemp: '22',
+             },
+             {
+              RFIDtag: '5432565466',
+              drugName: 'inferon',
+              amount: '50',
+              organization: 'ware',
+              dateManufactured: '2019-03-04',
+              dateExpired: '2020-05-20',
+              block: '3',
+              minTemp: '18',
+              maxTemp: '24',
+             },
+             {
+              RFIDtag: '5432565466',
+              drugName: 'inferon',
+              amount: '50',
+              organization: 'issu',
+              dateManufactured: '2019-03-04',
+              dateExpired: '2020-05-20',
+              block: '4',
+              minTemp: '19',
+              maxTemp: '25',
+             },
+           
+             {
                 RFIDtag: '4324987425',
                 drugName: 'teriperatide',
                 amount: '100',
                 organization: 'yekinto',
                 dateManufactured: '2019-06-24',
                 dateExpired: '2020-12-30',
+                block: '1',
                 minTemp: '10',
                 maxTemp: '20',
+             },
+             {
+              RFIDtag: '4324987425',
+              drugName: 'teriperatide',
+              amount: '100',
+              organization: 'sup',
+              dateManufactured: '2019-06-24',
+              dateExpired: '2020-12-30',
+              block: '2',
+              minTemp: '10',
+              maxTemp: '20',
              },
              {
                 RFIDtag: '4324947283',
@@ -38,6 +85,7 @@ class NCKContract extends Contract {
                 organization: 'zeeBo',
                 dateManufactured: '2019-07-20',
                 dateExpired: '2019-12-05',
+                block: '1',
                 minTemp: '15',
                 maxTemp: '23',
              },
@@ -48,8 +96,42 @@ class NCKContract extends Contract {
                 organization: 'yekinto',
                 dateManufactured: '2019-03-04',
                 dateExpired: '2020-05-20',
+                block: '1',
                 minTemp: '15',
                 maxTemp: '20',
+             },
+             {
+              RFIDtag: '5543687575',
+              drugName: 'inferon',
+              amount: '50',
+              organization: 'sup',
+              dateManufactured: '2019-03-04',
+              dateExpired: '2020-05-20',
+              block: '2',
+              minTemp: '18',
+              maxTemp: '24',
+             },
+             {
+              RFIDtag: '5543687575',
+              drugName: 'inferon',
+              amount: '50',
+              organization: 'ware',
+              dateManufactured: '2019-03-04',
+              dateExpired: '2020-05-20',
+              block: '3',
+              minTemp: '15',
+              maxTemp: '20',
+             },
+             {
+              RFIDtag: '5543687575',
+              drugName: 'inferon',
+              amount: '50',
+              organization: 'issu',
+              dateManufactured: '2019-03-04',
+              dateExpired: '2020-05-20',
+              block: '4',
+              minTemp: '15',
+              maxTemp: '20',
              },
              {
                 RFIDtag: '76487865368',
@@ -58,6 +140,7 @@ class NCKContract extends Contract {
                 organization: 'ZeeBo',
                 dateManufactured: '2019-08-20',
                 dateExpired: '2019-12-10',
+                block: '1',
                 minTemp: '25',
                 maxTemp: '30',
              },
@@ -68,8 +151,20 @@ class NCKContract extends Contract {
                 organization: 'ACME',
                 dateManufactured: '2019-03-15',
                 dateExpired: '2019-10-12',
+                block: '1',
                 minTemp: '14',
                 maxTemp: '20',
+             },
+             {
+              RFIDtag: '8447248953',
+              drugName: 'Ritonavir',
+              amount: '30',
+              organization: 'sup',
+              dateManufactured: '2019-03-15',
+              dateExpired: '2019-10-12',
+              block: '2',
+              minTemp: '14',
+              maxTemp: '20',
              },
              {
                 RFIDtag: '8535893582',
@@ -78,8 +173,42 @@ class NCKContract extends Contract {
                 organization: 'yekinto',
                 dateManufactured: '2019-07-05',
                 dateExpired: '2020-02-20',
+                block: '1',
                 minTemp: '23',
                 maxTemp: '30',
+             },
+             {
+              RFIDtag: '8535893582',
+              drugName: 'VePesid',
+              amount: '80',
+              organization: 'sup',
+              dateManufactured: '2019-07-05',
+              dateExpired: '2020-02-20',
+              block: '2',
+              minTemp: '23',
+              maxTemp: '30',
+             },
+             {
+              RFIDtag: '8535893582',
+              drugName: 'VePesid',
+              amount: '80',
+              organization: 'ware',
+              dateManufactured: '2019-07-05',
+              dateExpired: '2020-02-20',
+              block: '3',
+              minTemp: '23',
+              maxTemp: '30',
+             },
+             {
+              RFIDtag: '8535893582',
+              drugName: 'VePesid',
+              amount: '80',
+              organization: 'issu',
+              dateManufactured: '2019-07-05',
+              dateExpired: '2020-02-20',
+              block: '4',
+              minTemp: '23',
+              maxTemp: '30',
              },
              {
                 RFIDtag: '7434574523',
@@ -88,6 +217,7 @@ class NCKContract extends Contract {
                 organization: 'ACME',
                 dateManufactured: '2019-10-23',
                 dateExpired: '2020-10-23',
+                block: '1',
                 minTemp: '20',
                 maxTemp: '25',
              },
@@ -98,6 +228,7 @@ class NCKContract extends Contract {
                 organization: 'Yekinto',
                 dateManufactured: '2019-10-20',
                 dateExpired: '2020-12-05',
+                block: '1',
                 minTemp: '17',
                 maxTemp: '25',
              },
@@ -108,9 +239,32 @@ class NCKContract extends Contract {
                 organization: 'yekinto',
                 dateManufactured: '2019-04-05',
                 dateExpired: '2020-05-10',
+                block: '1',
                 minTemp: '19',
                 maxTemp: '27',
              },
+             {
+              RFIDtag: '46793579024',
+              drugName: 'Sandostatin',
+              amount: '100',
+              organization: 'sup',
+              dateManufactured: '2019-04-05',
+              dateExpired: '2020-05-10',
+              block: '2',
+              minTemp: '19',
+              maxTemp: '27',
+            },
+            {
+              RFIDtag: '46793577832',
+              drugName: 'Inferin',
+              amount: '100',
+              organization: 'ace',
+              dateManufactured: '2019-04-05',
+              dateExpired: '2020-05-10',
+              block: '1',
+              minTemp: '19',
+              maxTemp: '27',
+            },
         ];
 
         for (let i = 0; i < batch.length; i++) {
@@ -163,6 +317,7 @@ class NCKContract extends Contract {
             dateExpired,
             dateSupplied,
             dateIssued,
+            block,
             minTemp,
             maxTemp,
         };
@@ -367,26 +522,13 @@ class NCKContract extends Contract {
   async getQueryResultForQueryString(ctx, queryString) {
 
     console.info('- getQueryResultForQueryString queryString:\n' + queryString)
+    var t1 = JSON.parse(JSON.stringify({now: new Date()})).now;
     let resultsIterator = await ctx.stub.getQueryResult(queryString);
     let results = await this.getAllResults(resultsIterator, true);
+    var t2 = JSON.parse(JSON.stringify({now: new Date()})).now;
+    var time = t2-t1;
+    console.info('query time: \n' + time)
     return JSON.stringify(results);
-  }
-
-  async queryBatchbyDrugName(ctx, drugName ) {
-    let drugName = drugName.toLowerCase();
-    let queryString = {};
-    queryString.selector = {};
-    queryString.selector.docType = 'batch';
-    queryString.selector.drugName = drugName;
-    let queryResults = await this.getQueryResultForQueryString(ctx, JSON.stringify(queryString));
-    let results = {};
-    for (i in queryResults.values) {
-      results[i].drugName = queryResults.values[i].drugName;
-      results[i].amount = queryResults.values[i].amount;
-      results[i].dateSupplied = queryResults.values[i].dateSupplied;
-      results[i].dateIssued = queryResults.values[i].dateIssued;
-    }
-    return results; 
   }
 
 }
