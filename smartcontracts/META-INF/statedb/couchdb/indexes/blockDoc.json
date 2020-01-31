@@ -1,8 +1,0 @@
-{
-    "index":{
-        "fields":["block"]
-    },
-    "ddoc":"blockDoc",
-    "name":"blockindex",
-    "type":"json"
-  }
