@@ -259,7 +259,7 @@ docker exec \
     -l node \
     -v 1.0 \
     -c '{"Args":[]}' \
-    -P "OR ('WarehouseMSP.peer','SupplierMSP.peer','WarehouseMSP.peer')" \
+    -P "OR ('WarehouseMSP.peer')" \
     --tls \
     --cafile ${ORDERER_TLS_ROOTCERT_FILE} \
     --peerAddresses peer0.warehouse.nck.com:7051 \
