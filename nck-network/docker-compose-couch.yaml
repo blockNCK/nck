@@ -18,13 +18,13 @@ services:
       - COUCHDB_USER=
       - COUCHDB_PASSWORD=
     # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
-    # for nck map it to utilize Fauxton User Interface in dev environments.
+    # for example map it to utilize Fauxton User Interface in dev environments.
     ports:
       - "5984:5984"
     networks:
       - byfn
 
-  peer0.warehouse.nck.com:
+  peer0.warehouse.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb0:5984
@@ -45,13 +45,13 @@ services:
       - COUCHDB_USER=
       - COUCHDB_PASSWORD=
     # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
-    # for nck map it to utilize Fauxton User Interface in dev environments.
+    # for example map it to utilize Fauxton User Interface in dev environments.
     ports:
       - "6984:5984"
     networks:
       - byfn
 
-  peer1.warehouse.nck.com:
+  peer1.warehouse.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb1:5984
@@ -72,13 +72,13 @@ services:
       - COUCHDB_USER=
       - COUCHDB_PASSWORD=
     # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
-    # for nck map it to utilize Fauxton User Interface in dev environments.
+    # for example map it to utilize Fauxton User Interface in dev environments.
     ports:
       - "7984:5984"
     networks:
       - byfn
 
-  peer0.issuer.nck.com:
+  peer0.supplier.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2:5984
@@ -99,13 +99,13 @@ services:
       - COUCHDB_USER=
       - COUCHDB_PASSWORD=
     # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
-    # for nck map it to utilize Fauxton User Interface in dev environments.
+    # for example map it to utilize Fauxton User Interface in dev environments.
     ports:
       - "8984:5984"
     networks:
       - byfn
 
-  peer1.issuer.nck.com:
+  peer1.supplier.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb3:5984
@@ -126,16 +126,16 @@ services:
       - COUCHDB_USER=
       - COUCHDB_PASSWORD=
     # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
-    # for nck map it to utilize Fauxton User Interface in dev environments.
+    # for example map it to utilize Fauxton User Interface in dev environments.
     ports:
       - "9984:5984"
     networks:
       - byfn
 
-  peer0.supplier.nck.com:
+  peer0.issuer.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb4:5984
       # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
       # provide the credentials for ledger to connect to CouchDB.  The username and password must
       # match the username and password set for the associated CouchDB.
@@ -153,16 +153,16 @@ services:
       - COUCHDB_USER=
       - COUCHDB_PASSWORD=
     # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
-    # for nck map it to utilize Fauxton User Interface in dev environments.
+    # for example map it to utilize Fauxton User Interface in dev environments.
     ports:
-      - "10184:5984"
+      - "10984:5984"
     networks:
       - byfn
 
-  peer1.supplier.nck.com:
+  peer1.issuer.example.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb3:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb5:5984
       # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
       # provide the credentials for ledger to connect to CouchDB.  The username and password must
       # match the username and password set for the associated CouchDB.
