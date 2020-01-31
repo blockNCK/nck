@@ -4,7 +4,7 @@
 
 'use strict';
 
-const NCKContract = require('./lib/nckcontract');
+const NCKContract = require('nckcontract');
 
 module.exports.NCKContract = NCKContract;
 module.exports.contracts = [ NCKContract ];

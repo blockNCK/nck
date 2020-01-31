@@ -1,0 +1,10 @@
+
+{
+    "index":{
+        "fields":["block", "drugName"] 
+    },
+    "ddoc":"blockTypeDoc", 
+    "name":"blockindex2",
+    "type":"json"
+  }
+  
