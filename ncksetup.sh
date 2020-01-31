@@ -269,6 +269,8 @@ docker exec \
     -P "OR ('WarehouseMSP.peer')" \
     --tls \
     --cafile ${ORDERER_TLS_ROOTCERT_FILE} \
+    --peerAddresses peer0.warehouse.nck.com:7051 \
+    --tlsRootCertFiles ${WAREHOUSE_TLS_ROOTCERT_FILE} \
 
 readiness_probe
 
