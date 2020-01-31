@@ -12,7 +12,7 @@ echo ""
 
 #wait till the function completes the action
 readiness_probe(){
-  sleep 20
+  sleep 5
 }
 
 cd nck-network
@@ -73,6 +73,7 @@ echo "pull latest images for the cli"
 echo "use couch db"
 docker-compose -f docker-compose-cli.yaml -f docker-compose-couch.yaml up -d
 readiness_probe
+ sleep 30
 
 export WAREHOUSE_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com/msp 
 export WAREHOUSE_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt
@@ -103,6 +104,7 @@ docker exec \
     -f ./channel-artifacts/channel.tx \
     --tls --cafile $ORDERER_TLS_ROOTCERT_FILE
 readiness_probe
+ sleep 30
 
 echo "install in the warehouse organization"
 docker exec \
@@ -115,6 +117,7 @@ docker exec \
   peer channel join \
     -b nckchannel.block 
 readiness_probe
+ sleep 30
 
 echo "install in the supplier organization"
 docker exec \
@@ -127,6 +130,7 @@ docker exec \
   peer channel join \
   -b nckchannel.block 
 readiness_probe
+ sleep 30
 
 echo "install in the issuer organization"
 docker exec \
@@ -139,6 +143,7 @@ docker exec \
   peer channel join \
   -b nckchannel.block 
 readiness_probe
+ sleep 30
 
 #==================================================
 #       Definition of anchor peers
