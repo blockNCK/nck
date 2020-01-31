@@ -1,8 +1,0 @@
-{
-    "index":{
-        "fields":["block", "Quantity"] 
-    },
-    "ddoc":"blockQuantityDoc",
-    "name":"blockindex3",
-    "type":"json"
-  }

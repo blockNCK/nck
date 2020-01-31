@@ -117,7 +117,7 @@ docker exec \
   peer channel join \
     -b nckchannel.block 
 readiness_probe
- sleep 30
+
 
 echo "install in the supplier organization"
 docker exec \
@@ -130,7 +130,7 @@ docker exec \
   peer channel join \
   -b nckchannel.block 
 readiness_probe
- sleep 30
+
 
 echo "install in the issuer organization"
 docker exec \
@@ -143,7 +143,7 @@ docker exec \
   peer channel join \
   -b nckchannel.block 
 readiness_probe
- sleep 30
+
 
 #==================================================
 #       Definition of anchor peers
