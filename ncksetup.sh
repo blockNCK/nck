@@ -62,7 +62,7 @@ readiness_probe
 #       Docker environment setup
 #==================================================
 
-export IMAGE_TAG=latest
+export IMAGE_TAG=1.4.3
 export SYS_CHANNEL=byfn-sys-channel
 export COMPOSE_PROJECT_NAME=nck
 export CHANNEL_NAME=nckchannel
