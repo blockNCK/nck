@@ -250,6 +250,7 @@ docker exec \
   -e CORE_PEER_ADDRESS=peer0.warehouse.nck.com:7051 \
   -e CORE_PEER_MSPCONFIGPATH=${WAREHOUSE_MSPCONFIGPATH} \
   -e CORE_PEER_TLS_ROOTCERT_FILE=${WAREHOUSE_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_GOSSIP_USELEADERELECTION=true \
   cli \
   peer chaincode instantiate \
     -o orderer.nck.com:7050 \
@@ -259,14 +260,19 @@ docker exec \
     -v 1.0 \
     -c '{"Args":[]}' \
     -P "OR ('WarehouseMSP.peer','SupplierMSP.peer','WarehouseMSP.peer')" \
-
+    --tls \
+    --cafile ${ORDERER_TLS_ROOTCERT_FILE} \
+    --peerAddresses peer0.warehouse.nck.com:7051 \
+    --peerAddresses peer0.supplier.nck.com:9051 \
+    --peerAddresses peer0.issuer.nck.com:10151 \
+    --tlsRootCertFiles ${WAREHOUSE_TLS_ROOTCERT_FILE} \
+    --tlsRootCertFiles ${SUPPLIER_TLS_ROOTCERT_FILE} \
+    --tlsRootCertFiles ${ISSUER_TLS_ROOTCERT_FILE}
 readiness_probe
 
 #==================================================
 #       invoke chaincode
 #==================================================
-
-
 echo "invoke chaincode"
 docker exec \
   -e CHANNEL_NAME=nckchannel \
