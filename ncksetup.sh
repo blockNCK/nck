@@ -246,6 +246,21 @@ docker exec \
   -p /opt/gopath/src/github.com/contract
 readiness_probe
 
+echo "install chaincode in the warehouse peers"
+docker exec \
+  -e CHANNEL_NAME=nckchannel \
+  -e CORE_PEER_LOCALMSPID="WarehouseMSP" \
+  -e CORE_PEER_ADDRESS=peer1.warehouse.nck.com:8051 \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com/msp \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer1.warehouse.nck.com/tls/ca.crt \
+  cli \
+  peer chaincode install \
+  -n nckcc \
+  -v 1.0 \
+  -l node \
+  -p /opt/gopath/src/github.com/contract
+readiness_probe
+
 echo "install chaincode in the supplier peers"
 docker exec \
   -e CHANNEL_NAME=nckchannel \
@@ -253,6 +268,21 @@ docker exec \
   -e CORE_PEER_ADDRESS=peer0.supplier.nck.com:9051  \
   -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/supplier.nck.com/users/Admin@supplier.nck.com/msp  \
   -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/supplier.nck.com/peers/peer0.supplier.nck.com/tls/ca.crt \
+  cli \
+  peer chaincode install \
+   -n nckcc \
+   -v 1.0 \
+   -l node \
+   -p /opt/gopath/src/github.com/contract
+readiness_probe
+
+echo "install chaincode in the supplier peers"
+docker exec \
+  -e CHANNEL_NAME=nckchannel \
+  -e CORE_PEER_LOCALMSPID="SupplierMSP" \
+  -e CORE_PEER_ADDRESS=peer1.supplier.nck.com:10051  \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/supplier.nck.com/users/Admin@supplier.nck.com/msp  \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/supplier.nck.com/peers/peer1.supplier.nck.com/tls/ca.crt \
   cli \
   peer chaincode install \
    -n nckcc \
@@ -276,6 +306,21 @@ docker exec \
    -p /opt/gopath/src/github.com/contract
 readiness_probe
 
+echo "install chaincode in the issuer peers"
+docker exec \
+  -e CHANNEL_NAME=nckchannel \
+  -e CORE_PEER_LOCALMSPID="IssuerMSP"  \
+  -e CORE_PEER_ADDRESS=peer1.issuer.nck.com:10251  \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/issuer.nck.com/users/Admin@issuer.nck.com/msp  \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/issuer.nck.com/peers/peer1.issuer.nck.com/tls/ca.crt \
+  cli \
+  peer chaincode install \
+   -n nckcc \
+   -v 1.0 \
+   -l node \
+   -p /opt/gopath/src/github.com/contract
+readiness_probe
+
 #==================================================
 #       Instantiate chaincode
 #==================================================
@@ -286,8 +331,7 @@ docker exec \
   -e CORE_PEER_LOCALMSPID="WarehouseMSP" \
   -e CORE_PEER_ADDRESS=peer0.warehouse.nck.com:7051 \
   -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com/msp \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt \
-  -e CORE_PEER_GOSSIP_USELEADERELECTION=true \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt \ \
   cli \
   peer chaincode instantiate \
     -o orderer.nck.com:7050 \
@@ -314,7 +358,6 @@ docker exec \
   -e CORE_PEER_ADDRESS=peer0.warehouse.nck.com:7051 \
   -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com/msp \
   -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt \
-  -e CORE_PEER_GOSSIP_USELEADERELECTION=true \
   cli \
   peer chaincode invoke \
     -o orderer.nck.com:7050 \
