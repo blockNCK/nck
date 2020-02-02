@@ -47,7 +47,7 @@ echo "Generate genesis block"
 readiness_probe
 
 echo "Generate channel artifacts"
-./configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
+./configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID nckchannel
 readiness_probe
 
 echo "Create anchor peers of the organizations"
@@ -91,14 +91,14 @@ docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="WarehouseMSP" \
   -e CORE_PEER_ADDRESS=peer0.warehouse.nck.com:7051 \
-  -e CORE_PEER_MSPCONFIGPATH=$WAREHOUSE_MSPCONFIGPATH \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=${WAREHOUSE_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com/msp \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt \
   cli \
   peer channel create \
     -o orderer.nck.com:7050 \
-    -c $CHANNEL_NAME \
+    -c nckchannel \
     -f ./channel-artifacts/channel.tx \
-    --tls --cafile $ORDERER_TLS_ROOTCERT_FILE
+    --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/nck.com/orderers/orderer.nck.com/msp/tlscacerts/tlsca.nck.com-cert.pem
 readiness_probe
 
 echo "install in the warehouse organization"
@@ -106,8 +106,8 @@ docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="WarehouseMSP" \
   -e CORE_PEER_ADDRESS=peer0.warehouse.nck.com:7051 \
-  -e CORE_PEER_MSPCONFIGPATH=${WAREHOUSE_MSPCONFIGPATH} \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=${WAREHOUSE_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com/msp \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt \
   cli \
   peer channel join \
     -b nckchannel.block 
@@ -118,8 +118,8 @@ docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="SupplierMSP" \
   -e CORE_PEER_ADDRESS=peer0.supplier.nck.com:9051  \
-  -e CORE_PEER_MSPCONFIGPATH=${SUPPLIER_MSPCONFIGPATH} \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=${SUPPLIER_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/supplier.nck.com/users/Admin@supplier.nck.com/msp  \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/supplier.nck.com/peers/peer0.supplier.nck.com/tls/ca.crt \
   cli \
   peer channel join \
   -b nckchannel.block 
@@ -130,8 +130,8 @@ docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="IssuerMSP"  \
   -e CORE_PEER_ADDRESS=peer0.issuer.nck.com:10151  \
-  -e CORE_PEER_MSPCONFIGPATH=${ISSUER_MSPCONFIGPATH} \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=${ISSUER_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/issuer.nck.com/users/Admin@issuer.nck.com/msp  \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/issuer.nck.com/peers/peer0.issuer.nck.com/tls/ca.crt \
   cli \
   peer channel join \
   -b nckchannel.block 
@@ -146,14 +146,14 @@ docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="WarehouseMSP" \
   -e CORE_PEER_ADDRESS=peer0.warehouse.nck.com:7051 \
-  -e CORE_PEER_MSPCONFIGPATH=${WAREHOUSE_MSPCONFIGPATH} \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=${WAREHOUSE_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com/msp \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt \
   cli \
   peer channel update \
     -o orderer.nck.com:7050 \
-    -c $CHANNEL_NAME \
+    -c nckchannel \
     -f ./channel-artifacts/WarehouseMSPanchors.tx \
-    --tls --cafile $ORDERER_TLS_ROOTCERT_FILE 
+    --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/nck.com/orderers/orderer.nck.com/msp/tlscacerts/tlsca.nck.com-cert.pem 
 readiness_probe
 
 echo "Definition of supplier anchor peer"
@@ -161,14 +161,14 @@ docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="SupplierMSP" \
   -e CORE_PEER_ADDRESS=peer0.supplier.nck.com:9051  \
-  -e CORE_PEER_MSPCONFIGPATH=${SUPPLIER_MSPCONFIGPATH} \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=${SUPPLIER_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/supplier.nck.com/users/Admin@supplier.nck.com/msp  \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/supplier.nck.com/peers/peer0.supplier.nck.com/tls/ca.crt \
   cli \
   peer channel update \
     -o orderer.nck.com:7050 \
-    -c $CHANNEL_NAME \
+    -c nckchannel \
     -f ./channel-artifacts/SupplierMSPanchors.tx \
-    --tls --cafile $ORDERER_TLS_ROOTCERT_FILE 
+    --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/nck.com/orderers/orderer.nck.com/msp/tlscacerts/tlsca.nck.com-cert.pem 
 readiness_probe
 
 echo "Definition of issuer anchor peer"
@@ -176,14 +176,14 @@ docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="IssuerMSP"  \
   -e CORE_PEER_ADDRESS=peer0.issuer.nck.com:10151  \
-  -e CORE_PEER_MSPCONFIGPATH=${ISSUER_MSPCONFIGPATH} \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=${ISSUER_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/issuer.nck.com/users/Admin@issuer.nck.com/msp  \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/issuer.nck.com/peers/peer0.issuer.nck.com/tls/ca.crt \
   cli \
   peer channel update \
   -o orderer.nck.com:7050 \
-  -c $CHANNEL_NAME \
+  -c nckchannel \
   -f ./channel-artifacts/IssuerMSPanchors.tx \
-  --tls --cafile ${ORDERER_TLS_ROOTCERT_FILE} 
+  --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/nck.com/orderers/orderer.nck.com/msp/tlscacerts/tlsca.nck.com-cert.pem
 readiness_probe
 
 #---------------------------------------------------------------------------------------------------------
@@ -199,8 +199,8 @@ docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="WarehouseMSP" \
   -e CORE_PEER_ADDRESS=peer0.warehouse.nck.com:7051 \
-  -e CORE_PEER_MSPCONFIGPATH=${WAREHOUSE_MSPCONFIGPATH} \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=${WAREHOUSE_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com/msp \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt \
   cli \
   peer chaincode install \
   -n nckcc \
@@ -214,8 +214,8 @@ docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="SupplierMSP" \
   -e CORE_PEER_ADDRESS=peer0.supplier.nck.com:9051  \
-  -e CORE_PEER_MSPCONFIGPATH=${SUPPLIER_MSPCONFIGPATH} \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=${SUPPLIER_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/supplier.nck.com/users/Admin@supplier.nck.com/msp  \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/supplier.nck.com/peers/peer0.supplier.nck.com/tls/ca.crt \
   cli \
   peer chaincode install \
    -n nckcc \
@@ -229,8 +229,8 @@ docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="IssuerMSP"  \
   -e CORE_PEER_ADDRESS=peer0.issuer.nck.com:10151  \
-  -e CORE_PEER_MSPCONFIGPATH=${ISSUER_MSPCONFIGPATH} \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=${ISSUER_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/issuer.nck.com/users/Admin@issuer.nck.com/msp  \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/issuer.nck.com/peers/peer0.issuer.nck.com/tls/ca.crt \
   cli \
   peer chaincode install \
    -n nckcc \
@@ -248,8 +248,8 @@ docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="WarehouseMSP" \
   -e CORE_PEER_ADDRESS=peer0.warehouse.nck.com:7051 \
-  -e CORE_PEER_MSPCONFIGPATH=${WAREHOUSE_MSPCONFIGPATH} \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=${WAREHOUSE_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com/msp \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt \
   -e CORE_PEER_GOSSIP_USELEADERELECTION=true \
   cli \
   peer chaincode instantiate \
@@ -261,13 +261,10 @@ docker exec \
     -c '{"Args":[]}' \
     -P "OR ('WarehouseMSP.peer','SupplierMSP.peer','WarehouseMSP.peer')" \
     --tls \
-    --cafile ${ORDERER_TLS_ROOTCERT_FILE} \
+    --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/nck.com/orderers/orderer.nck.com/msp/tlscacerts/tlsca.nck.com-cert.pem\
     --peerAddresses peer0.warehouse.nck.com:7051 \
-    --peerAddresses peer0.supplier.nck.com:9051 \
-    --peerAddresses peer0.issuer.nck.com:10151 \
-    --tlsRootCertFiles ${WAREHOUSE_TLS_ROOTCERT_FILE} \
-    --tlsRootCertFiles ${SUPPLIER_TLS_ROOTCERT_FILE} \
-    --tlsRootCertFiles ${ISSUER_TLS_ROOTCERT_FILE}
+    --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt \
+ 
 readiness_probe
 
 #==================================================
@@ -278,8 +275,8 @@ docker exec \
   -e CHANNEL_NAME=nckchannel \
   -e CORE_PEER_LOCALMSPID="WarehouseMSP" \
   -e CORE_PEER_ADDRESS=peer0.warehouse.nck.com:7051 \
-  -e CORE_PEER_MSPCONFIGPATH=${WAREHOUSE_MSPCONFIGPATH} \
-  -e CORE_PEER_TLS_ROOTCERT_FILE=${WAREHOUSE_TLS_ROOTCERT_FILE} \
+  -e CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/users/Admin@warehouse.nck.com/msp \
+  -e CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt \
   -e CORE_PEER_GOSSIP_USELEADERELECTION=true \
   cli \
   peer chaincode invoke \
@@ -289,13 +286,13 @@ docker exec \
     -c '{"function":"initLedger","Args":[]}' \
     --waitForEvent \
     --tls \
-    --cafile ${ORDERER_TLS_ROOTCERT_FILE} \
+    --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/nck.com/orderers/orderer.nck.com/msp/tlscacerts/tlsca.nck.com-cert.pem\
     --peerAddresses peer0.warehouse.nck.com:7051 \
     --peerAddresses peer0.supplier.nck.com:9051 \
     --peerAddresses peer0.issuer.nck.com:10151 \
-    --tlsRootCertFiles ${WAREHOUSE_TLS_ROOTCERT_FILE} \
-    --tlsRootCertFiles ${SUPPLIER_TLS_ROOTCERT_FILE} \
-    --tlsRootCertFiles ${ISSUER_TLS_ROOTCERT_FILE}
+    --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/warehouse.nck.com/peers/peer0.warehouse.nck.com/tls/ca.crt \
+    --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/supplier.nck.com/peers/peer0.supplier.nck.com/tls/ca.crt \
+    --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/issuer.nck.com/peers/peer0.issuer.nck.com/tls/ca.crt
 readiness_probe
 
 #---------------------------------------------------------------------------------------------------------
