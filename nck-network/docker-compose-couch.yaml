@@ -155,7 +155,7 @@ services:
     # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
     # for nck map it to utilize Fauxton User Interface in dev environments.
     ports:
-      - "10084:5984"
+      - "10184:5984"
     networks:
       - byfn
 

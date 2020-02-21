@@ -20,6 +20,7 @@ class NCKContract extends Contract {
                dateExpired: '2020-05-20',
                minTemp: '15',
                maxTemp: '20',
+               block: '0',
             },
             {
                 RFIDtag: '4324987425',
@@ -30,6 +31,7 @@ class NCKContract extends Contract {
                 dateExpired: '2020-12-30',
                 minTemp: '10',
                 maxTemp: '20',
+                block: '0',
              },
              {
                 RFIDtag: '4324947283',
@@ -40,6 +42,7 @@ class NCKContract extends Contract {
                 dateExpired: '2019-12-05',
                 minTemp: '15',
                 maxTemp: '23',
+                block: '0',
              },
              {
                 RFIDtag: '5543687575',
@@ -50,6 +53,7 @@ class NCKContract extends Contract {
                 dateExpired: '2020-05-20',
                 minTemp: '15',
                 maxTemp: '20',
+                block: '0',
              },
              {
                 RFIDtag: '76487865368',
@@ -60,6 +64,7 @@ class NCKContract extends Contract {
                 dateExpired: '2019-12-10',
                 minTemp: '25',
                 maxTemp: '30',
+                block: '0',
              },
              {
                 RFIDtag: '8447248953',
@@ -70,6 +75,7 @@ class NCKContract extends Contract {
                 dateExpired: '2019-10-12',
                 minTemp: '14',
                 maxTemp: '20',
+                block: '0',
              },
              {
                 RFIDtag: '8535893582',
@@ -80,6 +86,7 @@ class NCKContract extends Contract {
                 dateExpired: '2020-02-20',
                 minTemp: '23',
                 maxTemp: '30',
+                block: '0',
              },
              {
                 RFIDtag: '7434574523',
@@ -90,6 +97,7 @@ class NCKContract extends Contract {
                 dateExpired: '2020-10-23',
                 minTemp: '20',
                 maxTemp: '25',
+                block: '0',
              },
              {
                 RFIDtag: '8746296537',
@@ -100,6 +108,7 @@ class NCKContract extends Contract {
                 dateExpired: '2020-12-05',
                 minTemp: '17',
                 maxTemp: '25',
+                block: '0',
              },
              {
                 RFIDtag: '46793579024',
@@ -110,6 +119,7 @@ class NCKContract extends Contract {
                 dateExpired: '2020-05-10',
                 minTemp: '19',
                 maxTemp: '27',
+                block: '0',
              },
         ];
 
@@ -142,7 +152,7 @@ class NCKContract extends Contract {
   // =====================================================
   // createBatch - create a batch and add to the chaincode
   // =====================================================
-    async createBatch(ctx, RFIDtag, drugName, amount, organization,dateManufactured, dateExpired, minTemp, maxTemp ) {
+    async createBatch(ctx, RFIDtag, drugName, amount, organization,dateManufactured, dateExpired, minTemp, maxTemp, block ) {
       
         // ==== Check if batch already exists ====
         let drugbatchState = await ctx.stub.getState(RFIDtag);
@@ -163,6 +173,7 @@ class NCKContract extends Contract {
             dateExpired,
             minTemp,
             maxTemp,
+            block,
         };
         await ctx.stub.putState(RFIDtag, Buffer.from(JSON.stringify(batch)));
         let indexName = 'drugName ~ RFIDtag'
@@ -188,8 +199,9 @@ class NCKContract extends Contract {
           jsonResp.error = 'Failed to decode JSON of: ' + RFIDtag;
           throw new Error(jsonResp);
         }
+        let block = batchToTransfer.block;
         batchToTransfer.organization = newOrganization; //change the organization
-    
+        batchToTransfer.block = block+1;
         let batchJSONasBytes = Buffer.from(JSON.stringify(batchToTransfer));
         await ctx.stub.putState(RFIDtag, batchJSONasBytes); //rewrite the batch
         console.info('============= END : changeOrganization ===========');
@@ -360,6 +372,14 @@ class NCKContract extends Contract {
 
     let responsePayload = util.format('Transferred %s batch to %s', name, newOrganization);
     console.info('- end transferBatchBasedOnName: ' + responsePayload);
+  }
+
+  async getQueryResultForQueryString(ctx, queryString) {
+
+    console.info('- getQueryResultForQueryString queryString:\n' + queryString)
+    let resultsIterator = await ctx.stub.getQueryResult(queryString);
+    let results = await this.getAllResults(resultsIterator,false);
+    return JSON.stringify(results);
   }
 
 }
