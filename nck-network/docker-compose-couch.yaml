@@ -78,7 +78,7 @@ services:
     networks:
       - byfn
 
-  peer0.issuer.nck.com:
+  peer0.supplier.nck.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2:5984
@@ -105,7 +105,7 @@ services:
     networks:
       - byfn
 
-  peer1.issuer.nck.com:
+  peer1.supplier.nck.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb3:5984
@@ -132,17 +132,17 @@ services:
     networks:
       - byfn
 
-  peer0.supplier.nck.com:
+  peer0.issuer.nck.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb2:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb4:5984
       # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
       # provide the credentials for ledger to connect to CouchDB.  The username and password must
       # match the username and password set for the associated CouchDB.
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
     depends_on:
-      - couchdb4
+      - couchdb44
 
   couchdb5:
     container_name: couchdb5
@@ -155,14 +155,14 @@ services:
     # Comment/Uncomment the port mapping if you want to hide/expose the CouchDB service,
     # for nck map it to utilize Fauxton User Interface in dev environments.
     ports:
-      - "10184:5984"
+      - "10984:5984"
     networks:
       - byfn
 
-  peer1.supplier.nck.com:
+  peer1.issuer.nck.com:
     environment:
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
-      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb3:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb5:5984
       # The CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME and CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD
       # provide the credentials for ledger to connect to CouchDB.  The username and password must
       # match the username and password set for the associated CouchDB.
@@ -170,3 +170,4 @@ services:
       - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=
     depends_on:
       - couchdb5
+
