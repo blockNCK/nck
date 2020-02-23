@@ -71,7 +71,7 @@ echo "pull latest images for the cli"
 sleep 10
 docker-compose -f docker-compose-cli.yaml up -d
 sleep 30
-docker-compose -f -f docker-compose-couch.yaml up -d
+docker-compose -f docker-compose-couch.yaml up -d
 sleep 60
 readiness_probe
 

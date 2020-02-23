@@ -42,3 +42,21 @@ observe how the batch was obtained from the production to the pharmacy making su
  ### History and transactions of a batch
  ![alt text](https://github.com/blockNCK/nck/blob/master/documents/images/history.png)
  At the end of issuing a batch, the issuer can see how the batch was transported and whether the quality of the batch was maintained.
+
+ peer chaincode query -C nckchannel -n nck -c '{"Args":["querygetQueryResultForQueryString", "{\"selector\":{\"docType\":\"batch\",\"block\":\"0\"}, \"use_index\":[\"_design/indexOwnerDoc\", \"indexOwner\"]}"]}'
+
+/usr/bin/time -p docker exec \
+  cli \
+  peer chaincode invoke \
+    -o orderer.nck.com:7050 \
+    -C nckchannel \
+    -n nckcc \
+    -c '{"Args":["createBatch","76367543","Neugdsn","652", "quigsg","2019-08-15","2020-01-12","12","17","0"]}'
+
+docker exec \
+  cli \
+  peer chaincode query \
+    -o orderer.nck.com:7050 \
+    -C nckchannel \
+    -n nckcc \
+    -c '{"Args":["createBatch", "{\"selector\":{\"docType\":\"batch\",\"block\":\"0\"}, \"use_index\":[\"_design/blockDoc\", \"blockindex\"]}"]}'
